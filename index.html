@@ -1,0 +1,296 @@
+<!doctype html>
+<html>
+<head>
+<title>survey slidrz</title>
+<style id="srvStyles">
+    
+@import url('https://fonts.googleapis.com/css?family=Luckiest+Guy');
+
+.srv {
+    --greyed-out: #888;
+    --faded-out: #888;
+    --thumb-color: #888;
+    --thumb-height: 70px;
+    --thumb-radius: 35px;
+    --trans-speed: 0.0s;
+}
+
+input.srv.srv-slider[type=range] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-color: var(--faded-out);
+    border-radius: var(--thumb-radius);
+    height: 70px;
+    width: 100%;
+    display: block;
+    margin: auto;
+}
+
+input.srv.srv-slider[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    background-color: var(--thumb-color);
+    height: var(--thumb-height);
+    width: var(--thumb-height);
+    border: 6px solid #666;
+    border-radius: var(--thumb-radius);
+    transition: background-color linear var(--trans-speed);
+}
+
+input.srv.srv-slider[type=range]::-ms-thumb {
+  /*box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;*/
+  border: 2px solid #666;
+  height: 24px;
+  width: 50%;
+  border-radius: 15px;
+  background: #fff;
+  cursor: pointer;
+}
+
+input.srv.srv-slider[type=range]:focus {
+    outline: none;
+}
+
+#holder {
+	position: relative;
+    margin: auto;
+    width: 100%;
+    max-width: 600px;
+}
+
+@media screen and (max-width:500px) {
+    body {
+        margin: 0;
+    }
+}
+
+.srv-path {
+    
+}
+
+</style>
+</head>
+<body>
+    
+<div id="holder" style="text-align:center">
+    
+    <div id="questionDiv" style="
+        width:100%;
+        margin:auto;
+        position: absolute;
+        top:40px;
+        text-align:center;
+        font-family:'luckiest guy';
+        font-size:27px;
+        color: #666;
+        user-select:none;
+        ">
+            how do you feel about surveys?
+    <br>
+            <span style="font-size:12px"></span>
+    </div>
+    
+    <svg id="svg0"
+     XXXviewbox="-10 -10 220 220"
+     width="440"
+     height="400"
+     style="
+        position: relative;
+        display: block;
+        margin: auto;
+        border: 0px solid #000;
+        overflow: visible;
+     "
+     xmlns="http://www.w3.org/2000/svg"
+     xmlns:xlink="http://www.w3.org/1999/xlink"
+    >
+        <defs>
+            <pattern
+             id="mig1"
+             patternUnits="userSpaceOnUse"
+             x="-20"
+             y="0"
+             height="200"
+             width="200"
+            >
+                <image
+                 xlink:href="plaid0.jpg"
+                 height="200"
+                 width="200"
+                />
+            </pattern>
+        </defs>
+        <g
+         transform="scale(2.2)"
+         fill-rule="evenOdd"
+        >
+            <path
+             id="boxPath"
+             class="srv srv-path"
+             style="
+                stroke: rgba(0,0,0,1);
+                stroke-width: 10;
+                stroke-linejoin: miter;
+                stroke-miterlimit: 10;
+             "
+             data-agr="M50 0Q72 100 50 180Q100 220 150 180Q128 100 150 0Q100 20 50 0Z"
+             data-mid="M50 50Q45 100 50 150Q100 155 150 150Q155 100 150 50Q100 45 50 50Z"
+             data-dis="m0 40Q72 100 0 160Q100 122 200 160Q128 100 200 40Q100 72 0 40Z"
+             data-lis="slide0"
+            />
+            <path
+             id="mouthPath"
+             class="srv srv-path"
+             style="
+                fill: #000;
+                stroke: rgba(0,0,0,0.8);
+                stroke-width: 0;
+                stroke-linejoin: miter;
+                stroke-miterlimit: 10;
+             "
+             data-agr="M75 50q20 5 57 0q-20 60 0 92q-30 30 -60 0q4 -60 0 -88l-12 2q10 -2 18 -14Z"
+             data-mid="M72 80q30 5 63 0q-8 20 0 22q-30 3 -64 0q0 -9 -3 -18l-8 4q5 -3 14 -14Z"
+             data-dis="M52 75q47 30 88 0q26 23 0 46q-33 -43 -86 0q-20 -20 -3 -43l-10 8q6 -18 18 -13Z"
+             data-lis="slide0"
+            />
+        </g>
+    </svg>
+
+    <br>
+    <div id="sliderHoldingDiv">
+        <input id="slide0"
+         class="srv srv-slider"
+         type="range"
+         min="-1"
+         max="1"
+         step="0.001"
+         value="0.000"
+         data-options='{
+            "agr" : [255, 180, 0],
+            "mid" : [200, 200, 200],
+            "dis" : [128, 0, 128]
+         }'
+         list="slide0List"
+        /><datalist id="slide0List"><option value="0" /></datalist>
+    </div>
+    <br>
+
+    <div id="notes"></div>
+
+</div>
+</body>
+<script id="colorGrabbing" >
+
+// see? you can do it all in this one little line:
+(()=>{document.querySelectorAll('.srv.srv-slider').forEach(obj=>{obj.addEventListener('input',(e,v=obj.dataset.options?JSON.parse(obj.dataset.options):{agr:[0,255,0],mid:[200,200,200],dis:[210,0,0]})=>{obj.dispatchEvent(new CustomEvent('colorValue',{detail:('rgb('+((parseFloat(obj.value)>0?v.agr:v.dis).map((col,i)=>~~(v.mid[i]+(col-v.mid[i])*Math.pow(Math.abs(parseFloat(obj.value)),0.8))).join(','))+')')}))});obj.addEventListener('colorValue',e=>{obj.style.setProperty('--thumb-color',e.detail)});})})();
+
+</script>
+
+<script id="pathMaker">
+
+// loop through all the srv-ey path marphers
+document.querySelectorAll('.srv.srv-path').forEach(obj => {
+    
+    // try to parse the path strings
+    'agr mid dis'.split(' ').forEach(dPath => {
+        obj[dPath] = obj.dataset[dPath].split(/([a-zA-z])/);
+        obj[dPath].shift();
+        obj[dPath].forEach((val, i) => {
+            obj[dPath][i] = isNaN(parseInt(val)) ? val : val.trim().split(/\s+/).map(Number);
+        });
+    });
+    
+    // add a listener to the slider
+    document.getElementById(obj.dataset.lis).addEventListener('input', e => {
+        
+        let sliVal = parseFloat(slide0.value),
+        endPts = (sliVal > 0 ? obj.agr : obj.dis);
+        curD = [];
+        endPts.forEach((val,i) => {
+        
+            curD[i] = (typeof val === 'string') ?
+                val :
+                val.map(
+                    (coord, j) =>
+                    obj.mid[i][j] +
+                    (coord - obj.mid[i][j]) * Math.pow(Math.abs(sliVal), 1)
+            )
+        });
+        
+        obj.setAttributeNS(null, 'd', curD.join(' '));
+        
+    });
+    
+});
+
+document.getElementById('slide0').addEventListener('colorValue', e=>{
+    
+    document.getElementById('boxPath').style.fill = e.detail;
+    //document.getElementById('boxPath').style.fill = slide0.value == 1 ? 'url(#mig1)' : e.detail;
+    
+});
+
+slide0.dispatchEvent(new Event('input'));
+
+(() => {
+    
+    const Q = {};
+    ('notes sli slide0').split(' ').forEach((obj, i) => {
+        Q[obj] = document.getElementById(obj);
+    });
+
+    // loop through all the srv sliders
+    document.querySelectorAll('.srv.srv-slider').forEach(obj => {
+        
+        // the default options
+        obj.ops = {
+            value: 0.5,
+            startColor: '#ea0',
+            endColor: '#f0f',
+            min: -1,
+            max: 1,
+            step: 0.001,
+            disabledColor: '#ccc',
+            transSpeed: '0.3s',
+            disabled: false
+        };
+        
+        // reset any options from the html
+        for (let i in (vals = obj.dataset.options ? JSON.parse(obj.dataset.options) : null)){
+            if (obj.ops[i] !== undefined) {
+                obj.ops[i] = vals[i];
+            }
+        }
+        
+        // set up the range slider properties
+        'min max step value'.split(' ').forEach(v => {
+                obj[v] = obj.ops[v];
+        });
+        
+        // convert the colors to number arrays
+        'startColor endColor'.split(' ').forEach(col => {
+            obj.style.color = obj.ops[col];
+            obj.ops[col] = obj.style.color.replace(/.*\(|\)/g, '').split(',').map(Number);
+        });
+        
+        let diff = obj.ops.startColor.map((col, i) => {
+           return obj.ops.endColor[i] - col;
+        });
+        
+        // listen for slides
+        obj.addEventListener('input', e => {
+
+            Q.notes.innerHTML = obj.value;
+            return;
+            obj.style.setProperty('--thumb-color', '#ea0');
+            Q.notes.innerHTML = Q.sli.style.backgroundColor = 'rgb(' + (obj.ops.startColor.map((col,i) => {
+                return col + obj.value * diff[i];
+            })).join(',') +')';
+
+        }, false);
+
+    });
+
+});
+
+</script>
+</html>
