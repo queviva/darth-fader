@@ -1,0 +1,53 @@
+.darth-fader {
+    --greyed-out: #888;
+    --faded-out: #ccc;
+    --thumb-color: #888;
+    --thumb-height: 50px;
+    --thumb-radius: 25px;
+    --max-width: 440px;
+}
+
+input.darth-fader[type=range] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    display: inline-block;
+    margin: 0;
+    height: var(--thumb-height);
+    width: 100%;
+    max-width: var(--max-width);
+    border-radius: var(--thumb-radius);
+    background-color: var(--faded-out);
+}
+
+input.darth-fader[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    background-color: var(--thumb-color);
+    height: var(--thumb-height);
+    width: var(--thumb-height);
+    border: 2px solid #666;
+    border-radius: var(--thumb-radius);
+}
+
+input.darth-fader[type=range]::-ms-thumb {
+  /*box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;*/
+  border: 2px solid #666;
+  height: 24px;
+  width: 50%;
+  border-radius: 15px;
+  background: #fff;
+  cursor: pointer;
+}
+
+input.darth-fader[type=range]:focus {
+    outline: none;
+}
+
+@media screen and (max-width:500px) {
+    
+    .darth-fader {
+        --thumb-height: 100px;
+        --thumb-radius: 50px;
+        --max-width: none;
+    }
+    
+}

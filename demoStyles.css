@@ -1,0 +1,112 @@
+
+:root {
+    --main-color: #666;
+    --greyed-out: #888;
+    --back-color: #fff;
+    --holder-back: #eee;
+    --faded-txt: rgba(255, 255, 255, 0.5);
+    --trans-speed: 0.3s;
+    --samp-var: #c30;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    padding: 0px;
+    margin: 0px;
+    color: var(--main-color);
+    background-color: var(--back-color);
+    font-size: 22px;
+    text-align: justify;
+    -webkit-hyphens: auto;
+    -moz-hyphens: auto;
+    -epub-hyphens: auto;
+    hyphens: auto;
+}
+
+#holder {
+	position: relative;
+	background-color: var(--holder-back);
+    margin: auto;
+    width: 100%;
+    max-width: 700px;
+}
+
+.qr {
+    padding: 10px;
+}
+
+.qa, .qr {
+    transition: color linear var(--trans-speed);
+}
+
+.qa:hover, .qr:hover {
+    color: #000;
+    transition: color linear var(--trans-speed);
+}
+
+.qa:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.qa > div {
+    float: left;
+    padding: 10px;
+    height: auto;
+}
+
+.qa > div:nth-child(1) {
+  width: 65%;
+}
+
+.qa > div:nth-child(2) {
+  width: 35%;
+  text-align: center;
+}
+
+
+pre {
+    background-color: var(--greyed-out);
+    margin: 0px;
+    padding: 0px;
+    color: #fff;
+    overflow: auto;
+}
+
+.strong-disagree {
+    text-align: center;
+    padding: 5px;
+    width: 100%;
+    font-size: 20px;
+    background-color: #888;
+    color: #fff;
+    display:flex;
+    margin: auto;
+}
+
+.strong-disagree > div {
+    width: 20%;
+}
+
+input[type=radio] {
+    
+    height: 30px;
+    width: 30px;
+    
+}
+
+@media screen and (max-width:500px) {
+    .strong-disagree {
+        font-size: 12px;
+    }
+	.qa > div:nth-child(1),
+	.qa > div:nth-child(2)
+	{
+    	width: 100%;
+    }
+}
+
