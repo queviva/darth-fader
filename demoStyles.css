@@ -99,6 +99,15 @@ input[type=radio] {
     
 }
 
+#svg0 {
+    position:relative;
+    width:220px;
+    height:340;
+    overflow: visible;
+    border: 0px solid #ea0;
+}
+
+/*possibly a portrait mobi-fone*/
 @media screen and (max-width:500px) {
     .strong-disagree {
         font-size: 12px;
@@ -108,5 +117,23 @@ input[type=radio] {
 	{
     	width: 100%;
     }
+    
+    #svg0 {
+        width: 200px;
+    }
+    
 }
+
+/*possibly a mobile landscaper*/
+@media screen 
+    and (orientation: landscape) 
+    and (max-width: 760px) 
+    {
+    
+    #svg0 {
+        width: 100px;
+    }
+    
+}
+
 

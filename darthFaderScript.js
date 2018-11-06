@@ -6,7 +6,8 @@
 /*global Event CustomEvent*/
 
 (() => { // anonymouse closure
-    //method for setting value directly and triggering and input
+
+    //method for setting value directly and triggering an input
     const setValue = (fader, val) => {
         
         fader.value = val;
@@ -15,30 +16,40 @@
     };
     
     // method for returning a faded array
-    const calcFade = (curFade, slyVal) => {
+    const calcFade = (curFade, slyVal, fix) => {
                      
+                // holder for the current diff
                 let curDif = [];
                 
                 // loop through the lower array
                 curFade.lowEnd.forEach((v,i) => {
                     
                     // if the value is a string
-                    curDif[i] = (typeof v === 'string') ?
+                    if (typeof v === 'string') {
                         
-                        //just return it
-                        v
+                        // just return it
+                        curDif[i] = v;
                         
-                        // otherwise ...
-                        :
+                    } else { // other wise
                         
-                        // take the low value and add ...
+                        // calc a tmp of the faded value
+                        let tmp =
+                        
+                        // the low-end value plus ...
                         v +
                         
                         // the delta times ...
                         (curFade.topEnd[i] - v) *
                         
                         // the fraction of the way between stops
-                        ((slyVal - curFade.lowStop) / (curFade.topStop - curFade.lowStop));
+                        ((slyVal - curFade.lowStop)
+                                    /
+                        (curFade.topStop - curFade.lowStop));
+                        
+                        // set with a fix or not
+                        //console.log(fix ? 'yes' : 'no');
+                        curDif[i] = fix ? tmp.toFixed(fix) : tmp;
+                    }
                         
                 });
                 
@@ -47,7 +58,7 @@
     };
     
     // loop through all darth-fader objects and set them up
-    document.querySelectorAll('input[type=range].darth-fader').forEach((obj) => {
+    document.querySelectorAll('.darth-fader').forEach((obj) => {
     
         // for exposing all the values
         obj.vals = {};
@@ -55,9 +66,16 @@
         // get all the fade data from the html
         let fadeList = obj.dataset.fades ?
             JSON.parse(obj.dataset.fades) :
-            {rating : ["-100", 0, "100", 1]};
+            {
+                rating : ["-100", 0, "100", 1],
+                colors : [
+                    "rgb(200,128,0)", 0,
+                    "rgb(128, 128, 128)", 0.5,
+                    "rgb(200, 0, 200)", 1
+                ]
+            };
             
-        // parse the data
+        // parse the fades data
         for (let fade in fadeList){
             
             // go through every elements
@@ -75,10 +93,12 @@
             
         }
 
-        // configure the range input
+        // configure the input
+        obj.type = 'range';
         obj.min = 0;
         obj.max = 1;
         obj.step = 0.001;
+        obj.fix = obj.dataset.fix ? JSON.parse(obj.dataset.fix) : null;
         
         // check if a value was set in options
         obj.value = obj.dataset.value ? parseFloat(obj.dataset.value) : 0.5;
@@ -117,7 +137,7 @@
                 curFade.topEnd = curFade[2*cnt];
                 
                 // finally create the vals for this fade
-                obj.vals[fade] = calcFade(curFade, slyVal);
+                obj.vals[fade] = calcFade(curFade, slyVal, obj.fix);
         
             }
             

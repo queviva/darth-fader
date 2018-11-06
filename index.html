@@ -11,17 +11,17 @@
 <div id="holder">
     <div id="introQ" class="qr" style="text-align: center;">
         <hr style="width:93%">
-        <i style="font-size:27px;font-family:'luckiest guy'">
+        <i id="ques" style="font-size:27px;font-family:'luckiest guy'">
             How do you feel about surveys?
-        </i>
-        <br><br>
+        </i><br>
             <svg id="svg0"
-             XXXviewbox="-10 -10 220 220"
-             width="440"
-             height="340"
-             style="
-                position: relative;
+             viewbox="0 0 220 340"
+             XXXstyle="
+                position:relative;
+                width:220px;
+                height:340;
                 overflow: visible;
+                border: 0px solid #ea0;
              "
              xmlns="http://www.w3.org/2000/svg"
              xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -43,7 +43,7 @@
                     </pattern>
                 </defs-->
                 <g
-                 transform="scale(2.2) translate(-0 -30)"
+                 transform="scale(2.2) translate(-50 -25)"
                  fill-rule="evenOdd"
                 >
                     <path
@@ -62,10 +62,6 @@
                      class="srv srv-path"
                      style="
                         fill: #000;
-                        stroke: rgba(0,0,0,0.8);
-                        stroke-width: 0;
-                        stroke-linejoin: miter;
-                        stroke-miterlimit: 10;
                      "
                     />
                 </g>
@@ -172,44 +168,44 @@
             sliding-scale input device.
             from the following code
     </div>
-    <div class="qa" style="border:1px solid;">
+    <div id="defaultDiv" class="qa" style="border:1px solid;">
         <div>
             <pre><code>
 &lt;input
- type="range"
  class="darth-fader"
 /&gt;
             </code></pre>
         </div>
         <div>
-            <input type="range" class="darth-fader" />
+            <input class="darth-fader" />
         </div>
     </div>
     <div class="qr">
         The darth-fader input is accurate, as can be,
         to 0.001 increments, and accepts 
-        <i>nearly anything</i> as pontential 
+        <i>nearly anything</i> as potential 
         numerically-fadeable inputs through its
         data-fades parameter.
     </div>
     <div class="qr">
-        This customized fader uses a well-formated
+        This customized example fader uses a well-formated
         JSON string to set up fades for
         level-values from negative to positive
         one hundred, and colors from red to green
-        [through grey]. It also uses a data-param
-        to set an initial value for the fader.
+        [through grey]. It also uses data-params
+        to set an initial value for the fader and 
+        a decimal-fix.
     </div>
-    <div class="qa">
+    <div id="customDiv" class="qa">
         <div>
             <pre><code>
 &lt;input
  id="customFader"
- type="range"
  class="darth-fader"
  data-value="0.75"
+ data-fix="2"
  data-fades='{
-    "levels" : ["-100", 0, "100", 1],
+    "levels" : ["-100%", 0, "100%", 1],
     "colors" : [
         "rgb(200, 0, 0)",     0.0,
         "rgb(100, 100, 100)", 0.5,
@@ -220,13 +216,15 @@
             </code></pre>
         </div>
         <div>
+            <div id="customOutput" class="qr" style="text-align:center;font-family:'luckiest guy';font-size:30px;"></div>
 <input
  id="customFader"
  type="range"
  class="darth-fader"
  data-value="0.75"
+ data-fix="2"
  data-fades='{
-    "levels" : ["-100", 0, "100", 1],
+    "levels" : ["-100%", 0, "100%", 1],
     "colors" : [
         "rgb(200, 0, 0)",     0.0,
         "rgb(100, 100, 100)", 0.5,
@@ -234,25 +232,21 @@
     ]
  }'
 />
-            <br>
-            <div id="customOutput" class="qr" style="text-align:center;font-family:'luckiest guy';font-size:30px;">
-                0.00%
-            </div>
         </div>
     </div>
-    <script>
+    <script id="customFaderScript">
         let cFade = document.getElementById('customFader');
         let cOut = document.getElementById('customOutput');
     
         cFade.addEventListener('valsChanged', e => {
             
-            cOut.innerHTML = (cFade.vals.levels < 0 ? '&nbsp;' : '&nbsp;&nbsp;&nbsp;') + parseFloat(cFade.vals.levels).toFixed(2) + '%';
+            //cOut.innerHTML = (cFade.vals.levels < 0 ? '&nbsp;' : '&nbsp;&nbsp;&nbsp;') + parseFloat(cFade.vals.levels).toFixed(2) + '%';
+            cOut.innerHTML = cFade.vals.levels;
             cFade.style.setProperty('--thumb-color', cFade.vals.colors);
             cOut.style.color = cFade.vals.colors;
     
         });
     </script>
-    
     <div class="qr">
         As many fade values as needed are entered as 
         arrays, indicating a string of a value
@@ -268,24 +262,29 @@
         <br><br>
         <pre>
             
-data-fades='{
+data-fades='{ // << the data-fades param in the html
 
-    // name of fade is 'colors'
     "colors" : [
+  // ^^^^^
+  // name of fade is 'colors'
     
-        // string for black ... at 0%
         "rbg(0, 0, 0)",          0,
+      //  ^^^^^^^^^^            ^^^
+      // string for black ...  at 0%
         
-        // string for white ...  at 100%
-        "rgb(255, 255, 255),      1
+        "rgb(255, 255, 255),     1
+      //  ^^^^^^^^^^            ^^^
+      // string for white ...  at 100%
     ]
 }'
         </pre>
     </div>
     <div class="qr">
-        This code creats a fade between svg paths.
-        <br><br>
-        <pre>
+        This code creates a fade between svg paths.
+    </div>
+    <div class="qa">
+        <div>
+        <pre><code>
             
 data-fades='{
 
@@ -306,7 +305,40 @@ data-fades='{
         
     ]
 }'
-        </pre>
+        </code></pre>
+        </div>
+        <div>
+            <svg id=""
+             viewbox="0 0 200 300"
+             xmlns="http://www.w3.org/2000/svg"
+             style="
+                 background-color: #ea0;
+             "
+            ><g>
+                <path id="svgSampPath" fill="#c30" />
+            </g></svg>
+            <input
+             id="svgFaderSamp"
+             class="darth-fader"
+             data-value="0"
+             data-fades='{
+                "paths" : [
+                    "M50 50h100v100h-100z", 0,
+                    "M10 80h80v1200h-130z", 0.25,
+                    "M10 80h280v2900h-30z", 0.8,
+                    "M-20 60h92v101h22z", 1
+                ]
+             }'
+            /> 
+            <script>
+let svgFader = document.getElementById('svgFaderSamp');
+let sampPath = document.getElementById('svgSampPath');
+
+svgFader.addEventListener('valsChanged', e => {
+    sampPath.setAttributeNS(null, 'd', svgFader.vals.paths);
+});
+            </script>
+        </div>
     </div>
     <div class="qr">
         All darth-fader objects must have a value 
@@ -319,15 +351,15 @@ data-fades='{
         and fade between, any numbers it encounters.
         The following code would function...
         <br><br>
-        <pre>
-            
+        <pre><code>
+data-fix="2"            
 data-fades='{
     "story" : [
         "In 3 weeks, I will lose $10 and 8 pounds", 0,
-        "In 9 weeks, I will lose $300 and 20 pounds", 1
+        "In 9 weeks, I will lose $300 and 20 pounds", 1  
     ]
 }'
-        </pre>
+        </code></pre>
         <br>
         ... as this example shows:
     </div>
@@ -338,10 +370,11 @@ data-fades='{
              type="range"
              class="darth-fader"
              data-value="0"
+             data-fix="2"
              data-fades='{
                 "story" : [
-                     "In 3 weeks, I will lose $10 and 8 pounds", 0,
-                     "In 9 weeks, I will lose $300 and 20 pounds", 1
+                     "in 3 weeks, I will lose $10 <br> and 8 pounds", 0,
+                     "in 9 weeks, I will lose $300 <br> and 20 pounds", 1
                 ],
                 "colors" : [
                      "rgb(200, 128, 0)", 0,
@@ -351,7 +384,7 @@ data-fades='{
              }'
             />
         </div>
-        <div id="storyOut" style="font-size:12px;height:80px;overflow:hidden;"></div>
+        <div id="storyOut" style="font-size:12px"></div>
         <script>
 let sFade = document.getElementById('storyFader');
 let sOut = document.getElementById('storyOut');
