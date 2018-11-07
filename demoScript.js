@@ -16,8 +16,6 @@
         Q.boxPath.setAttributeNS(null, 'd', Q.faceFader.vals.facePaths);
         Q.boxPath.style.fill = Q.faceFader.vals.colors;
         Q.mouthPath.setAttributeNS(null, 'd', Q.faceFader.vals.mouthPaths);
-        Q.faceFader.style.setProperty('--thumb-color',
-         Q.faceFader.vals.colors);
     });
 
     

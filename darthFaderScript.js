@@ -27,7 +27,7 @@
                     // if the value is a string
                     if (typeof v === 'string') {
                         
-                        // just return it
+                        // just set it 
                         curDif[i] = v;
                         
                     } else { // other wise
@@ -47,7 +47,6 @@
                         (curFade.topStop - curFade.lowStop));
                         
                         // set with a fix or not
-                        //console.log(fix ? 'yes' : 'no');
                         curDif[i] = fix ? tmp.toFixed(fix) : tmp;
                     }
                         
@@ -63,14 +62,14 @@
         // for exposing all the values
         obj.vals = {};
     
-        // get all the fade data from the html
+        // get all the fade list data from the html
         let fadeList = obj.dataset.fades ?
             JSON.parse(obj.dataset.fades) :
             {
-                rating : ["-100", 0, "100", 1],
+                levels : ["-100", 0, "100", 1],
                 colors : [
-                    "rgb(200,128,0)", 0,
-                    "rgb(128, 128, 128)", 0.5,
+                    "rgb(238,170,0)", 0,
+                    "rgb(255,255,255)", 0.5,
                     "rgb(200, 0, 200)", 1
                 ]
             };
@@ -78,7 +77,7 @@
         // parse the fades data
         for (let fade in fadeList){
             
-            // go through every elements
+            // go through every element
             for(let i = 0, j = fadeList[fade].length; i < j; i += 2){
                 
                 // split it up on the numbers saving delimiters
@@ -100,10 +99,55 @@
         obj.step = 0.001;
         obj.fix = obj.dataset.fix ? JSON.parse(obj.dataset.fix) : null;
         
-        // check if a value was set in options
+        // if there is a snap option set a datalist
+        if (
+            obj.dataset.snap 
+            &&
+            fadeList[obj.dataset.snap]
+        ) {
+            
+            // create a shorthand
+            let fad = fadeList[obj.dataset.snap],
+            
+            // create a list
+            tmpL = document.createElement('datalist');
+            
+            // loop over the specified fade
+            for (let i = 0, j = fad.length; i < j; i += 2) { 
+            
+                // add an option for this point
+                let tmpO = document.createElement('option');
+                tmpO.value = fad[i + 1];
+                tmpL.appendChild(tmpO);
+                
+            }
+            
+            // add the list to the obj
+            obj.appendChild(tmpL);
+            
+            // give this obj the right list
+            // ALERT ::: has to be by _ID_!
+            tmpL.id = `${obj.id}_datalist`;
+            obj.setAttribute('list', tmpL.id);
+            
+        }
+        
+        // if there is a colors option set
+        if (obj.dataset.thumb) {
+            
+            // add a listener
+            obj.addEventListener('valsChanged', e => {
+                
+                // force the color back on itself
+                obj.style.setProperty('--thumb-color', obj.vals[obj.dataset.thumb]);
+                
+            });
+        }
+        
+        // check if an initial value was set in options
         obj.value = obj.dataset.value ? parseFloat(obj.dataset.value) : 0.5;
         
-        // allow a method of setting value directly
+        // expose a method of setting value directly
         obj.setValue = val => setValue(obj,val);
    
         // listen for changes to the slider
@@ -143,7 +187,6 @@
             
             // let any listeners know
             obj.dispatchEvent(new CustomEvent('valsChanged'));
-        
             
         });
         

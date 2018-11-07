@@ -76,13 +76,15 @@
              type="range"
              class="darth-fader"
              data-value="0.5"
+             data-snap="facePaths"
+             data-thumb="colors"
              data-fades='{
                 "levels" : ["-100", 0, "100", 1],
                 "colors" : [
                     "rgb(128, 0, 128)", 0,
                     "rgb(128, 0, 128)", 0.25,
-                    "rgb(200, 200, 200)", 0.5,
-                    "rgb(255, 180, 0)", 0.75,
+                    "rgb(143, 143, 143)", 0.5,
+                    "rgb(255, 180, 0)", 0.6,
                     "rgb(255, 180, 0)", 1
                 ],
                 "facePaths" : [
@@ -98,8 +100,7 @@
                     "M75 50q20 5 57 0q-20 60 0 92q-30 30 -60 0q4 -60 0 -88l-12 2q10 -2 18 -14Z", 1
                  ]
              }'
-             list="slide0List"
-            /><datalist id="slide0List"><option value="0.5" /></datalist>
+            />
         </div>
         <hr style="width:93%">
     </div>
@@ -168,7 +169,7 @@
             sliding-scale input device.
             from the following code
     </div>
-    <div id="defaultDiv" class="qa" style="border:1px solid;">
+    <div id="defaultFaderDiv" class="qa" style="border:1px solid;">
         <div>
             <pre><code>
 &lt;input
@@ -196,7 +197,7 @@
         to set an initial value for the fader and 
         a decimal-fix.
     </div>
-    <div id="customDiv" class="qa">
+    <div id="customFaderDiv" class="qa">
         <div>
             <pre><code>
 &lt;input
@@ -260,9 +261,8 @@
     <div class="qr">
         This code would fade between black and white.
         <br><br>
-        <pre>
-            
-data-fades='{ // << the data-fades param in the html
+        <pre><code>
+data-fades='{ // the data-fades param in the html
 
     "colors" : [
   // ^^^^^
@@ -272,17 +272,17 @@ data-fades='{ // << the data-fades param in the html
       //  ^^^^^^^^^^            ^^^
       // string for black ...  at 0%
         
-        "rgb(255, 255, 255),     1
+        "rgb(255, 255, 255)",     1
       //  ^^^^^^^^^^            ^^^
       // string for white ...  at 100%
     ]
 }'
-        </pre>
+        </code></pre>
     </div>
     <div class="qr">
         This code creates a fade between svg paths.
     </div>
-    <div class="qa">
+    <div id="svgFaderSampleDiv" class="qa">
         <div>
         <pre><code>
             
@@ -321,6 +321,7 @@ data-fades='{
              id="svgFaderSamp"
              class="darth-fader"
              data-value="0"
+             data-snap="paths"
              data-fades='{
                 "paths" : [
                     "M50 50h100v100h-100z", 0,
@@ -330,7 +331,7 @@ data-fades='{
                 ]
              }'
             /> 
-            <script>
+            <script id="sampSVGscript">
 let svgFader = document.getElementById('svgFaderSamp');
 let sampPath = document.getElementById('svgSampPath');
 
@@ -437,6 +438,41 @@ sFade.addEventListener('valsChanged', e => {
             
         </code></pre>
     </div>
+    <div class="qr">
+        Silly enough to <i>want</i> snaps?
+        darth-fader takes a snap parameter
+        and creates snaps at the stop-points 
+        of the specified fade name:
+        <br><br>
+        data-snap="name_of_fade_to_snap_to"
+        <br><br>
+        Want the drag-dot to color itself?
+        use the data-thumb param and set it 
+        equal to the fade that should provide
+        the color values.
+    </div>
+    <div class="qr">
+        If no fade is specified,
+        darth-fader creates two default fade arrays
+        of its own: <i>colors</i> and <i>levels</i>
+        which graduate between yellow and purple
+        [through white]
+        for the d-fader-obj.vals.colors and between 
+        negative and positive one hundred for 
+        d-fader-obj.vals.levels
+        <br><br>
+    </div>
+    <div class="qr" style="text-align:center">
+        
+        <input 
+         id="snapFader"
+         class="darth-fader"
+         data-thumb="colors"
+         data-snap="colors"
+        />
+    </div>
+    
+    
 
     <div id="signature" class="qr" style="font-family:'luckiest guy';text-align:right;">
         <i>~queviva</i>
