@@ -531,11 +531,16 @@ sFade.addEventListener('valsChanged', e => {
                 <input 
                  id="postTest"
                  class="darth-fader"
-                 data-thumb="colors"
-                 data-snap="levels"
-                 data-fix="2"
+                 xxxdata-thumb="colors"
+                 xxxdata-snap="levels"
+                 xxxdata-fix="2"
                 />
             </div>
+            <script>
+                postTest.addEventListener('valsChanged', e => {
+                    console.log(postTest.vals.levels);
+                })
+            </script>
             <div>
                 <input
                  type="submit"

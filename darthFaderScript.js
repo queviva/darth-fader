@@ -15,6 +15,27 @@
         
     };
     
+    // method to parse a JSON formated fade
+    const parseFade = (fade) => {
+        
+        // go through every other element
+        for(let i = 0, j = fade.length; i < j; i += 2){
+                
+            // split it up on the numbers saving delimiters
+            fade[i] = fade[i].split(/(-?\d*\.{0,1}\d+)/);
+                
+            // force the numbers to actually be numbers
+            fade[i].forEach((v,k)=>{
+                fade[i][k] = isNaN(parseFloat(v)) ? v : Number(v);
+            });
+                
+        }
+        
+        // pass back the altered fade
+        return fade;
+        
+    };
+    
     // method for returning a faded array
     const calcFade = (curFade, slyVal, fix) => {
                      
@@ -46,8 +67,9 @@
                                 /
                     (curFade.topStop - curFade.lowStop));
                         
-                // set with a fix or not
+                // set with apropos fix
                 curDif[i] = fix ? tmp.toFixed(fix) : tmp;
+                
             }
                         
         });
@@ -78,25 +100,18 @@
         // parse the fades data
         for (let fade in fadeList){
             
-            // go through every element
-            for(let i = 0, j = fadeList[fade].length; i < j; i += 2){
-                
-                // split it up on the numbers saving delimiters
-                fadeList[fade][i] = fadeList[fade][i].split(/(-?\d*\.{0,1}\d+)/);
-                
-                // force the numbers to actually be numbers
-                fadeList[fade][i].forEach((v,k)=>{
-                    fadeList[fade][i][k] = isNaN(parseFloat(v)) ? v : Number(v);
-                });
-                
-            }
+            // send it through the parser
+            fadeList[fade] = parseFade(fadeList[fade]);
             
             // create a hidden input for this fade
             let iPut = document.createElement('input');
             iPut.type = 'hidden';
+            
+            // give the input a name and id
             iPut.id = iPut.name = `${obj.id}_${fade}`;
-            obj.hiddenInputs[fade] = iPut; 
-            obj.appendChild(iPut);
+            
+            // add it to the fader and hidden inputs list
+            obj.appendChild(obj.hiddenInputs[fade] = iPut);
             
         }
 
@@ -139,37 +154,52 @@
         // check if color-the-thumb option set
         if (obj.dataset.thumb) {
             
-            // add a listener
-            obj.addEventListener('valsChanged',
-                (fadeList[obj.dataset.thumb] ? 
-                    e => {
+            // check if the specified fade exists
+            if (fadeList[obj.dataset.thumb]) {
+                
+                // add a listener
+                obj.addEventListener('valsChanged', e => {
                         
                         // force the color back on itself
                         obj.style.setProperty('--thumb-color', obj.vals[obj.dataset.thumb]);
                 
-                    } :
-                    e => {
+                });
+                
+            } else { // other wize need to create colors
+            
+                // send the through the parser
+                obj.privateVarnish = parseFade(
+                    [
+                        'rgb(238,170,0)', 0,
+                        'rgb(255,255,255)', 0.5,
+                        'rgb(200,0,200)', 1
+                    ]
+                );
+                
+                // listen for values changed
+                obj.addEventListener('valsChanged', e => {
                         
-                        
-                        let tmp = {}, objV = parseFloat(obj.value);
+                    let tmp = {}, objV = parseFloat(obj.value);
                        
-                        if ( objV < 0.5 ) { 
-                            tmp.lowEnd = ['rgb(',238,',',170,',',0,')'];
-                            tmp.lowStop = 0;
-                            tmp.topEnd = ['rgb(',255,',',255,',',255,')'];
-                            tmp.topStop = 0.5;
-                        } else {
-                             tmp.lowEnd = ['rgb(',255,',',255,',',255,')'];
-                             tmp.lowStop = 0.5;
-                             tmp.topEnd = ['rgb(',200,',', 0,',',200,')'];
-                             tmp.topStop = 1;
-                        }
-                        
-                        obj.style.setProperty('--thumb-color',calcFade(tmp, objV, '0'));
-                        
+                       
+                    // figure out who's on top
+                    if ( objV < 0.5 ) { 
+                        tmp.lowEnd = obj.privateVarnish[0];
+                        tmp.lowStop = 0;
+                        tmp.topEnd = obj.privateVarnish[2];
+                        tmp.topStop = 0.5;
+                    } else {
+                        tmp.lowEnd = obj.privateVarnish[2];
+                        tmp.lowStop = 0.5;
+                        tmp.topEnd = obj.privateVarnish[4];
+                        tmp.topStop = 1;
                     }
-                )
-            );
+                        
+                    // set the thumb color from the calculated val
+                    obj.style.setProperty('--thumb-color', calcFade(tmp, objV, '0'));
+                        
+                });
+            }
         }
         
         // check if an initial value was set in options
