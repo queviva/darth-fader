@@ -529,24 +529,39 @@ sFade.addEventListener('valsChanged', e => {
         <div class="qa">
             <div>
                 <input 
-                 id="postTest"
+                 id="postTestA"
                  class="darth-fader"
-                 xxxdata-thumb="colors"
-                 xxxdata-snap="levels"
-                 xxxdata-fix="2"
+                 style="height:20px;--thumb-height:20px"
+                 data-value="0.45"
+                 data-thumb="colors"
+                 data-snap="levels"
+                 data-fix="2"
+                />
+                <input 
+                 id="postTestB"
+                 class="darth-fader"
+                 style="height:20px;--thumb-height:20px"
+                 data-value="0.75"
+                 data-thumb="colors"
+                 data-snap="levels"
+                 data-fix="2"
+                />
+                <input 
+                 id="postTestZ"
+                 class="darth-fader"
+                 style="height:20px;--thumb-height:20px"
+                 data-value="0.2"
+                 data-thumb="colors"
+                 data-snap="levels"
+                 data-fix="2"
                 />
             </div>
-            <script>
-                postTest.addEventListener('valsChanged', e => {
-                    console.log(postTest.vals.levels);
-                })
-            </script>
             <div>
                 <input
                  type="submit"
                  style="
                      width: 100%;
-                     height: 50px;
+                     height: 70px;
                      font-size: 25px;
                  "
                  value="bite here"
