@@ -4,6 +4,7 @@
     --thumb-color: #888;
     --thumb-height: 50px;
     --thumb-radius: 25px;
+    --thumb-border: 2px solid #666;
     --max-width: 440px;
 }
 
@@ -24,7 +25,7 @@ input.darth-fader[type=range]::-webkit-slider-thumb {
     background-color: var(--thumb-color);
     height: var(--thumb-height);
     width: var(--thumb-height);
-    border: 2px solid #666;
+    border: var(--thumb-border);
     border-radius: var(--thumb-radius);
 }
 
@@ -47,6 +48,7 @@ input.darth-fader[type=range]:focus {
     .darth-fader {
         --thumb-height: 100px;
         --thumb-radius: 50px;
+        --thumb-border: 8px solid #666;
         --max-width: none;
     }
     
