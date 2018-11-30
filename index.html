@@ -198,7 +198,7 @@
     </div>
     <hr>
     <div style="padding:10px;">
-        <div class="survQ">
+        <div id="ques0" class="survQ">
             How satisfied were you with your service?
         </div>
         <div id="notSat" class="survArr left">Not Satisfied</div>
@@ -226,12 +226,12 @@
 (() => {
         
     let Q = {};
-    `df0 notSat yesSat`
+    `df0 notSat yesSat ques0`
     .trim().split(/\s+/).forEach(obj => 
         Q[obj] = document.getElementById(obj)
     );
 
-    Q.df0.addEventListener('dblclick', e => {
+    Q.ques0.addEventListener('dblclick', e => {
         Q.df0.setValue(0.5);
     });
     
