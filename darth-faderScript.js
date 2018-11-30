@@ -167,12 +167,12 @@
                 
             } else { // other wize need to create colors
             
-                // send the through the parser
-                obj.privateVarnish = parseFade(
+                // send them through the parser
+                let privateVarnish = parseFade(
                     [
-                        'rgb(238,170,0)', 0,
+                        'rgb(200,0,200)', 0,
                         'rgb(255,255,255)', 0.5,
-                        'rgb(200,0,200)', 1
+                        'rgb(238,170,0)', 1 
                     ]
                 );
                 
@@ -184,17 +184,20 @@
                        
                     // figure out who's on top
                     if ( objV < 0.5 ) { 
-                        tmp.lowEnd = obj.privateVarnish[0];
+                        tmp.lowEnd = privateVarnish[0];
                         tmp.lowStop = 0;
-                        tmp.topEnd = obj.privateVarnish[2];
+                        tmp.topEnd = privateVarnish[2];
                         tmp.topStop = 0.5;
                     } else {
-                        tmp.lowEnd = obj.privateVarnish[2];
+                        tmp.lowEnd = privateVarnish[2];
                         tmp.lowStop = 0.5;
-                        tmp.topEnd = obj.privateVarnish[4];
+                        tmp.topEnd = privateVarnish[4];
                         tmp.topStop = 1;
                     }
                         
+                    // expose this val to others, NOT in hidden inputs
+                    obj.vals[obj.dataset.thumb] = calcFade(tmp, objV, '0');
+                    
                     // set the thumb color from the calculated val
                     obj.style.setProperty('--thumb-color', calcFade(tmp, objV, '0'));
                         

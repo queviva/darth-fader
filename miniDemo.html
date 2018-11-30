@@ -1,5 +1,5 @@
 <!doctype html>
-<html>
+<html lang="en">
 <head><title>mini darth-fader</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link id="luckiestFont" href="https://fonts.googleapis.com/css?family=Luckiest+Guy" rel="stylesheet">
@@ -117,6 +117,7 @@
 </div>
 </body>
 <script id="darth-faderScript">
+/* global Event CustomEvent */
 (()=>{const Z=document,Q=x=>Z.createElement(x),a=(d,f)=>{d.value=f,d.dispatchEvent(new Event('input'))},b=d=>{for(let f=0,g=d.length;f<g;f+=2)d[f]=d[f].split(/(-?\d*\.{0,1}\d+)/),d[f].forEach((h,l)=>{d[f][l]=isNaN(parseFloat(h))?h:+h});return d},c=(d,f,g)=>{let h=[];return d.lowEnd.forEach((l,m)=>{if('string'==typeof l)h[m]=l;else{let n=l+(d.topEnd[m]-l)*((f-d.lowStop)/(d.topStop-d.lowStop));h[m]=g?n.toFixed(g):n}}),h.join('')};Z.querySelectorAll('.darth-fader').forEach(d=>{d.vals={},d.hiddenInputs={};let f=d.dataset.fades?JSON.parse(d.dataset.fades):{levels:['-100',0,'0',0.5,'100',1]};for(let g in f){f[g]=b(f[g]);let h=Q('input');h.type='hidden',h.id=h.name=`${d.id}_${g}`,d.appendChild(d.hiddenInputs[g]=h)}if(d.type='range',d.min=0,d.max=1,d.step=1e-3,d.fix=d.dataset.fix?JSON.parse(d.dataset.fix):null,d.dataset.snap&&f[d.dataset.snap]){let g=f[d.dataset.snap],h=Q('datalist');for(let n,l=0,m=g.length;l<m;l+=2)n=Q('option'),n.value=g[l+1],h.appendChild(n);d.appendChild(h),h.id=`${d.id}_datalist`,d.setAttribute('list',h.id)}d.dataset.thumb&&(f[d.dataset.thumb]?d.addEventListener('valsChanged',()=>{d.style.setProperty('--thumb-color',d.vals[d.dataset.thumb])}):(d.pV=b(['rgb(238,170,0)',0,'rgb(255,255,255)',0.5,'rgb(200,0,200)',1]),d.addEventListener('valsChanged',()=>{let h={},l=parseFloat(d.value);0.5>l?(h.lowEnd=d.pV[0],h.lowStop=0,h.topEnd=d.pV[2],h.topStop=0.5):(h.lowEnd=d.pV[2],h.lowStop=0.5,h.topEnd=d.pV[4],h.topStop=1),d.style.setProperty('--thumb-color',c(h,l,'0'))}))),d.value=d.dataset.value?parseFloat(d.dataset.value):0.5,d.setValue=g=>a(d,g),d.addEventListener('input',()=>{let h=parseFloat(d.value);for(let l in f){let m=f[l],n=0;for(;m[1+2*n]<=h&&1!=m[1+2*n];)m.lowStop=m[1+2*n],m.lowEnd=m[2*n],n++;m.topStop=m[1+2*n],m.topEnd=m[2*n],d.vals[l]=d.hiddenInputs[l].value=c(m,h,d.fix)}d.dispatchEvent(new CustomEvent('valsChanged'))}),d.dispatchEvent(new Event('input'))})})();
 </script>
 </html>

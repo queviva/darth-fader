@@ -35,6 +35,11 @@ body {
     max-width: 700px;
 }
 
+a {
+    text-decoration: none;
+    color: var(--main-color);
+}
+
 .qa {
     border: 1px solid #000;
 }
@@ -47,7 +52,7 @@ body {
     transition: color linear var(--trans-speed);
 }
 
-.qa:hover, .qr:hover {
+.qa:hover, .qr:hover, a:hover, a:visited {
     color: #000;
     transition: color linear var(--trans-speed);
 }
@@ -93,8 +98,34 @@ pre {
     margin: auto;
 }
 
-.strong-disagree > div {
+.strong-disagree > label {
     width: 20%;
+}
+
+.survQ {
+    padding: 10px;
+    width: 100%;
+    text-align: center;
+    font-size: 27px;
+}
+    
+.survArr {
+    width: 50%;
+    text-align: center;
+    font-size: 10px;
+    float: left;
+}
+
+.survArr.left {
+    border-right: 1px solid #888;
+}
+
+.survArr.left:before {
+    content: '\25C0 \25C0 \25C0  ';
+}
+
+.survArr.rite:after{
+    content: '  \25B6 \25B6 \25B6';
 }
 
 input[type=radio] {
@@ -102,6 +133,15 @@ input[type=radio] {
     height: 30px;
     width: 30px;
     
+}
+
+.darth-fader.sfx {
+    --max-width: none;
+}
+
+.darth-fader.mini {
+    --thumb-height:20px;
+    --thumb-border: none;
 }
 
 #svg0 {
