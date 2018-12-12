@@ -61,7 +61,7 @@
              type="range"
              class="darth-fader"
              data-value="0.5"
-             data-snap="facePaths"
+             XXXdata-snap="facePaths"
              data-thumb="colors"
              data-fades='{
                 "levels" : ["-100", 0, "100", 1],
@@ -99,7 +99,7 @@
     <script id="faceFaderScript">
     
     let Q = {};
-    'faceFader boxPath mouthPath'.split(' ').forEach(obj => {
+    'faceFader svg0 boxPath mouthPath'.split(' ').forEach(obj => {
         
         Q[obj] = document.getElementById(obj);
     
@@ -112,6 +112,10 @@
         //Q.mouthPath.style.fill = Q.faceFader.vals.strokeColors;
         Q.mouthPath.setAttributeNS(null, 'd', Q.faceFader.vals.mouthPaths);
     });
+    
+    Q.svg0.addEventListener('dblclick', e =>
+        Q.faceFader.setValue(0.5)
+    );
 
     </script>
 </div>
