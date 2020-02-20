@@ -48,7 +48,7 @@
             // if the value is a string
             if (typeof v === 'string') {
                         
-                // just set it 
+                // just set it
                 curDif[i] = v;
                         
             } else { // other wise
@@ -132,7 +132,7 @@
             tmpL = document.createElement('datalist');
             
             // loop over the specified fade
-            for (let i = 0, j = fad.length; i < j; i += 2) { 
+            for (let i = 0, j = fad.length; i < j; i += 2) {
             
                 // add an option for this point
                 let tmpO = document.createElement('option');
@@ -172,7 +172,7 @@
                     [
                         'rgb(200,0,200)', 0,
                         'rgb(255,255,255)', 0.5,
-                        'rgb(238,170,0)', 1 
+                        'rgb(238,170,0)', 1
                     ]
                 );
                 
@@ -183,7 +183,7 @@
                        
                        
                     // figure out who's on top
-                    if ( objV < 0.5 ) { 
+                    if ( objV < 0.5 ) {
                         tmp.lowEnd = privateVarnish[0];
                         tmp.lowStop = 0;
                         tmp.topEnd = privateVarnish[2];

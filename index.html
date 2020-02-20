@@ -184,17 +184,17 @@
         <a href="https://www.researchgate.net/publication/228445427_Do_Data_Characteristics_Change_According_to_the_Number_of_Scale_Points_Used_An_Experiment_Using_5_Point_7_Point_and_10_Point_Scales">
         Restricting sampled opinion to only five
         fixed integers
-        exposes statistical analysis to errors of 
+        exposes statistical analysis to errors of
         false-significance.
         </a>
     </div>
     <div class="qr">
         This <a href="darth-faderScript.js"><i>darth-fader</i> script</a>,
-        creates a continuous-slider input object 
+        creates a continuous-slider input object
         <a href="use.html">[learn more about how to use
-        the code]</a> and can be used to quickly construct 
+        the code]</a> and can be used to quickly construct
         common surveys on computers, tablets, or small
-        mobile devices. 
+        mobile devices.
     </div>
     <hr>
     <div style="padding:10px;">
@@ -222,14 +222,14 @@
                     "rgb(255, 180, 0)", 1
             ]
          }'
-        /> 
+        />
         <script id="faceFaderScript">
     
 (() => {
         
     let Q = {};
     `df0 notSat yesSat ques0`
-    .trim().split(/\s+/).forEach(obj => 
+    .trim().split(/\s+/).forEach(obj =>
         Q[obj] = document.getElementById(obj)
     );
 
@@ -238,8 +238,8 @@
     });
     
     Q.df0.addEventListener('valsChanged', e => {
-        Q.notSat.style.color = Q.df0.vals.notSatCol; 
-        Q.yesSat.style.color = Q.df0.vals.yesSatCol; 
+        Q.notSat.style.color = Q.df0.vals.notSatCol;
+        Q.yesSat.style.color = Q.df0.vals.yesSatCol;
     });
 
 })();
