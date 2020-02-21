@@ -1,172 +1,195 @@
-////////////////////////////////////////////////////////////
-// queviva desliza
-//
-// the master of all faders
 
-/*global Event CustomEvent*/
 
-(() => { // anonymouse closure
+// window load new func closure
+window.addEventListener('load', () => { new (function () {
 
-    //method for setting value directly and triggering an input
-    const setValue = (fader, val) => {
-        
-        fader.value = val;
-        fader.dispatchEvent(new Event('input'));
-        
+    // list of default preferences
+    const defPrefs = {
+        selector: 'darthfader',
+        faderClassName: 'darth-fader',
+        loadedEventName: 'darthloaded',
+        inputEventName: 'darthfaded',
+        fix: false,
+        snap: false,
+        thumb: false,
+        value: 0.5,
+        fades: {
+            levels: [
+                "-100", 0,
+                "0", 0.5,
+                "100", 1
+            ]
+        },
+
+        able: true
     };
-    
-    // method to parse a JSON formated fade
-    const parseFade = (fade) => {
+
+    // grab any opts set in data-param of the script tag
+    const opts = JSON.parse(((document.querySelector(
+        'script[src*="darth-fader"][src$=".js"]'
+    ) || {}).dataset || {}).darth || '{}');
+
+    // over rite any valid default prefs passed in
+    for (let p in opts) {
+        if (defPrefs[p] !== undefined) defPrefs[p] = opts[p];
+    }
+
+    // correct any typos
+    defPrefs.faderClassName = defPrefs.faderClassName.replace(/[^a-z-]/gi,'');
         
+    // method to parse a JSON formated fade
+    const parseFade = fade => {
+
         // go through every other element
-        for(let i = 0, j = fade.length; i < j; i += 2){
-                
+        for (let i = 0, j = fade.length; i < j; i += 2) {
+
             // split it up on the numbers saving delimiters
             fade[i] = fade[i].split(/(-?\d*\.{0,1}\d+)/);
-                
+
             // force the numbers to actually be numbers
-            fade[i].forEach((v,k)=>{
+            fade[i].forEach((v, k) => {
                 fade[i][k] = isNaN(parseFloat(v)) ? v : Number(v);
             });
-                
+
         }
-        
+
         // pass back the altered fade
         return fade;
-        
+
     };
-    
+
     // method for returning a faded array
     const calcFade = (curFade, slyVal, fix) => {
-                     
+
         // holder for the current diff
         let curDif = [];
 
         // loop through the lower array
-        curFade.lowEnd.forEach((v,i) => {
-                    
+        curFade.lowEnd.forEach((v, i) => {
+
             // if the value is a string
             if (typeof v === 'string') {
-                        
+
                 // just set it
                 curDif[i] = v;
-                        
-            } else { // other wise
-                        
+
+            }
+            else { // other wise
+
                 // calc a tmp of the faded value
                 let tmp =
-                        
+
                     // the low-end value plus ...
                     v +
-                        
+
                     // the delta times ...
                     (curFade.topEnd[i] - v) *
-                        
+
                     // the fraction of the way between stops
-                    ((slyVal - curFade.lowStop)
-                                /
-                    (curFade.topStop - curFade.lowStop));
-                        
+                    ((slyVal - curFade.lowStop) /
+                        (curFade.topStop - curFade.lowStop));
+
                 // set with apropos fix
                 curDif[i] = fix ? tmp.toFixed(fix) : tmp;
-                
+
             }
-                        
+
         });
-                
+
         // spit out that faded arrary with some joinery
         return curDif.join('');
-        
+
     };
+
+    // the dart fader object
+    const DarthFader = function(obj) {
     
-    // loop through all darth-fader objects and set them up
-    document.querySelectorAll('.darth-fader').forEach((obj) => {
+        // expose preferences for this obj
+        this.prefs = {};
+    
+        // parse any prefs included in the input tag's data-params
+        let dataPrefs = obj.dataset.darthfader ? JSON.parse(obj.dataset.darthfader) : {};
+    
+        // if any valid prefs were given, set them
+        for (let p in defPrefs) {
+            this.prefs[p] = dataPrefs[p] !== undefined ? dataPrefs[p] : defPrefs[p];
+        }
+    
+        // reference to the html element
+        this.obj = obj;
     
         // for exposing all the values
-        obj.vals = {};
-        obj.hiddenInputs = {};
+        this.vals = {};
     
         // get all the fade list data from the html
-        let fadeList = obj.dataset.fades ?
-            JSON.parse(obj.dataset.fades) :
-            {
-                levels : [
-                    "-100", 0,
-                    "0", 0.5,
-                    "100", 1
-                ]
-            };
-            
+        let fadeList = this.prefs.fades;
+    
         // parse the fades data
-        for (let fade in fadeList){
-            
+        for (let fade in fadeList) {
+    
             // send it through the parser
             fadeList[fade] = parseFade(fadeList[fade]);
-            
+    
             // create a hidden input for this fade
             let iPut = document.createElement('input');
             iPut.type = 'hidden';
-            
+    
             // give the input a name and id
             iPut.id = iPut.name = `${obj.id}_${fade}`;
-            
+    
             // add it to the fader and hidden inputs list
-            obj.appendChild(obj.hiddenInputs[fade] = iPut);
-            
+            //obj.appendChild(this.hiddenInputs[fade] = iPut);
+            obj.appendChild(iPut);
+    
         }
-
-        // configure the input
-        obj.type = 'range';
-        obj.min = 0;
-        obj.max = 1;
-        obj.step = 0.001;
-        obj.fix = obj.dataset.fix ? JSON.parse(obj.dataset.fix) : null;
         
         // check if snap option set in datalist
-        if (obj.dataset.snap  && fadeList[obj.dataset.snap]) {
-            
+        if (this.prefs.snap && fadeList[this.prefs.snap]) {
+    
             // create a shorthand
-            let fad = fadeList[obj.dataset.snap],
-            
-            // create a list
-            tmpL = document.createElement('datalist');
-            
+            let fad = fadeList[this.prefs.snap],
+    
+                // create a list
+                tmpL = document.createElement('datalist');
+    
             // loop over the specified fade
             for (let i = 0, j = fad.length; i < j; i += 2) {
-            
+    
                 // add an option for this point
                 let tmpO = document.createElement('option');
                 tmpO.value = fad[i + 1];
                 tmpL.appendChild(tmpO);
-                
+    
             }
-            
-            // add the list to the obj
+    
+            // add the list to the input element
             obj.appendChild(tmpL);
-            
+    
             // give this obj the right list
             // ALERT ::: has to be by _ID_!
             tmpL.id = `${obj.id}_datalist`;
             obj.setAttribute('list', tmpL.id);
-            
+    
         }
-        
+    
         // check if color-the-thumb option set
-        if (obj.dataset.thumb) {
-            
+        if (this.prefs.thumb) {
+    
             // check if the specified fade exists
-            if (fadeList[obj.dataset.thumb]) {
-                
+            if (fadeList[this.prefs.thumb]) {
+    
                 // add a listener
-                obj.addEventListener('valsChanged', e => {
-                        
-                        // force the color back on itself
-                        obj.style.setProperty('--thumb-color', obj.vals[obj.dataset.thumb]);
-                
+                obj.addEventListener(this.prefs.inputEventName, e => {
+    
+                    // force the color back on itself
+                    obj.style.setProperty('--thumb-color',
+                        this.vals[this.prefs.thumb]);
+    
                 });
-                
-            } else { // other wize need to create colors
-            
+    
+            }
+            else { // other wize need to create colors
+    
                 // send them through the parser
                 let privateVarnish = parseFade(
                     [
@@ -175,97 +198,201 @@
                         'rgb(238,170,0)', 1
                     ]
                 );
-                
+    
                 // listen for values changed
-                obj.addEventListener('valsChanged', e => {
-                        
-                    let tmp = {}, objV = parseFloat(obj.value);
-                       
-                       
+                obj.addEventListener(this.prefs.inputEventName, e => {
+    
+                    let tmp = {},
+                        objV = parseFloat(obj.value);
+    
                     // figure out who's on top
-                    if ( objV < 0.5 ) {
+                    if (objV < 0.5) {
                         tmp.lowEnd = privateVarnish[0];
                         tmp.lowStop = 0;
                         tmp.topEnd = privateVarnish[2];
                         tmp.topStop = 0.5;
-                    } else {
+                    }
+                    else {
                         tmp.lowEnd = privateVarnish[2];
                         tmp.lowStop = 0.5;
                         tmp.topEnd = privateVarnish[4];
                         tmp.topStop = 1;
                     }
-                        
-                    // expose this val to others, NOT in hidden inputs
-                    obj.vals[obj.dataset.thumb] = calcFade(tmp, objV, '0');
-                    
+    
+                    // expose this val to others
+                    this.vals[this.prefs.thumb] = calcFade(tmp, objV, '0');
+    
                     // set the thumb color from the calculated val
                     obj.style.setProperty('--thumb-color', calcFade(tmp, objV, '0'));
-                        
+    
                 });
             }
         }
-        
-        // check if an initial value was set in options
-        obj.value = obj.dataset.value ? parseFloat(obj.dataset.value) : 0.5;
-        
-        // expose a method of setting value directly
-        obj.setValue = val => setValue(obj,val);
-   
-        // listen for changes to the slider
-        obj.addEventListener('input', e => {
-            
-            // create a float number of the current value
-            let slyVal = parseFloat(obj.value);
-            
-            // loop through all of the fades in the list
-            for (let fade in fadeList) {
-                
-                // abbreviate the current fade
-                let curFade = fadeList[fade];
-                
-                // needs a counter
-                let cnt = 0;
-                
-                // compute the low end array and its stop
-                while(
-                    
-                    // if this fade's stop is less than the value
-                    curFade[(1+cnt*2)] <= slyVal
-                    &&
-                    // and not the 100% stop
-                    curFade[(1+cnt*2)] != 1
-                ) {
-                    
-                    // set the low end array and its stop
-                    curFade.lowStop = curFade[1 + cnt * 2];
-                    curFade.lowEnd = curFade[cnt * 2];
-                    cnt++;
-                
-                }
-                
-                // set the top end array and its stop
-                curFade.topStop = curFade[1 + 2*cnt];
-                curFade.topEnd = curFade[2*cnt];
-                
-                // finally create the vals for this fade
-                obj.vals[fade] =
-                
-                // and copy them to the hidden inputs
-                obj.hiddenInputs[fade].value =
-                
-                // by calling the calc
-                calcFade(curFade, slyVal, obj.fix);
-        
-            }
-            
-            // let any listeners know
-            obj.dispatchEvent(new CustomEvent('valsChanged'));
-            
-        });
-        
-        // trigger an input on load
-        obj.dispatchEvent(new Event('input'));
-         
-    });
     
-})();
+        // set an initial value
+        obj.value = this.prefs.value;
+    
+        // listen for inputs to the slider
+        obj.addEventListener('input', e => {
+            this.inputHandler(this, fadeList);
+        });
+    
+    };
+
+    // proto to trigger load and input events on load, passes reference
+    DarthFader.prototype.loadComplete = function() {
+        this.obj.dispatchEvent(
+            new CustomEvent(this.prefs.loadedEventName, {
+                detail: {
+                    ref: this
+                },
+                input: this.obj.dispatchEvent(new Event('input')),
+            }
+        ));
+    };
+
+    // method to handle the input event from the slider
+    DarthFader.prototype.inputHandler = function(DF, fadeList) {
+        
+        // create a float number of the current value
+        let slyVal = parseFloat(DF.obj.value);
+    
+        // loop through all of the fades in the list
+        for (let fade in fadeList) {
+    
+            // abbreviate the current fade
+            let curFade = fadeList[fade];
+    
+            // needs a counter
+            let cnt = 0;
+    
+            // compute the low end array and its stop
+            while (
+    
+                // if this fade's stop is less than the value
+                curFade[(1 + cnt * 2)] <= slyVal &&
+                // and not the 100% stop
+                curFade[(1 + cnt * 2)] != 1
+    
+            ) {
+    
+                // set the low end array and its stop
+                curFade.lowStop = curFade[1 + cnt * 2];
+                curFade.lowEnd = curFade[cnt * 2];
+                cnt++;
+    
+            }
+    
+            // set the top end array and its stop
+            curFade.topStop = curFade[1 + 2 * cnt];
+            curFade.topEnd = curFade[2 * cnt];
+    
+            // finally create the vals for this fade
+            DF.vals[fade] =
+    
+            // by calling the calc
+            calcFade(curFade, slyVal, DF.prefs.fix);
+    
+        }
+    
+        // let any listeners know
+        DF.obj.dispatchEvent(new CustomEvent(
+            DF.prefs.inputEventName, {
+                detail: { vals: DF.vals }
+            }
+        ));
+    
+    };
+    
+    // exposed ability to set value
+    DarthFader.prototype.setValue = function(v) {
+        this.obj.value = v;
+        this.inputHandler(this, this.prefs.fades);
+    };
+
+    // get reference to every DarthFader obj from selector
+    const allDarths = {};
+
+    // fill the allDarths reference
+    document.querySelectorAll(
+        `input[data-${ defPrefs.selector.replace(/[^a-z]/gi,'') }]`
+    ).forEach(obj => {
+                    
+        // configure the input element
+        obj.type = 'range';
+        obj.min = 0;
+        obj.max = 1;
+        obj.step = 0.001;
+        
+        // set the classname
+        obj.classList.add(defPrefs.faderClassName)
+        
+        obj.style.setProperty(
+            '--thumb-height',
+            window.getComputedStyle(obj).height
+        );
+        
+        allDarths[obj.id] = new DarthFader(obj);
+        
+    });
+
+    // add the styles needed for the inputs
+    (document.body.appendChild((document.createElement('style')))).innerText = //{
+        `
+    .${defPrefs.faderClassName} {
+        --greyed-out: #888;
+        --faded-out: #ccc;
+        --thumb-color: #888;
+        --thumb-radius: calc(var(--thumb-height) / 2);
+        --thumb-border: calc(0.1 * var(--thumb-height)) solid #666;
+        --max-width: 440px;
+    }
+    
+    input.${defPrefs.faderClassName}[type=range] {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        display: inline-block;
+        margin: 0;
+        width: 100%;
+        max-width: var(--max-width);
+        border-radius: var(--thumb-radius);
+        background-color: var(--faded-out);
+    }
+    
+    input.${defPrefs.faderClassName}[type=range]::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        background-color: var(--thumb-color);
+        height: var(--thumb-height);
+        width: var(--thumb-height);
+        border: var(--thumb-border);
+        border-radius: var(--thumb-radius);
+    }
+    
+    input.${defPrefs.faderClassName}[type=range]:focus { outline: none; }
+    
+} `;
+     //}
+
+    // set the thumb height on resize
+    window.addEventListener('resize', e => {
+    
+        for (let D in allDarths) {
+
+            allDarths[D].obj.style.setProperty(
+                '--thumb-height',
+                window.getComputedStyle(allDarths[D].obj).height
+            );
+
+        }
+    
+    });
+
+    // let any listeners know this is loaded
+    document.dispatchEvent(new Event('DarthFaderLoaded'));
+
+    // loop through and trigger the individual DarthFader loads
+    for (let obj in allDarths) {
+        allDarths[obj].loadComplete();
+    }
+
+})()});

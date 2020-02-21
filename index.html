@@ -1,15 +1,20 @@
 <!doctype html>
 <html lang="en">
-<head><title>darth-fader</title>
+<head><title>darth fader demo</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link id="luckiestFont" href="https://fonts.googleapis.com/css?family=Luckiest+Guy" rel="stylesheet">
-<link id="darth-faderStyles" rel="stylesheet" type="text/css" href="darth-faderStyles.css">
 <link id="demoStyles" rel="stylesheet" type="text/css" href="demoStyles.css">
+<script src="darth-faderScript.js" data-darth='{
+    "rat" : "master",
+    "inputEventName" : "demoFadeEvent"
+}'
+></script>
 </head>
 <body>
     
 <div id="holder">
-    <div id="introQ" class="qr" style="text-align: center;">
+    
+    <div id="introQ" class="qr" style="text-align:center;">
         <hr style="width:93%">
         <i id="ques" style="font-size:27px;font-family:'luckiest guy'">
             How do you feel about surveys?
@@ -68,184 +73,136 @@
     
             </svg>
             
-        <div id="faceFaderDiv" class="qr"
-        style="text-align:center;"
-        >
+        <div id="faceFaderDiv" style="text-align:center;">
             <input
              id="faceFader"
              type="range"
-             class="darth-fader"
-             data-value="0.5"
-             XXXdata-snap="facePaths"
-             data-thumb="colors"
-             data-fades='{
-                "levels" : ["-100", 0, "100", 1],
-                "colors" : [
-                    "rgb(128, 0, 128)", 0,
-                    "rgb(128, 0, 128)", 0.2,
-                    "rgb(200, 200, 200)", 0.5,
-                    "rgb(255, 180, 0)", 0.6,
-                    "rgb(255, 180, 0)", 1
-                ],
-                "facePaths" : [
-                    "M0 40Q72 100 0 160Q100 122 200 160Q128 100 200 40Q100 72 0 40Z", 0,
-                    "M0 40Q72 100 0 160Q100 122 200 160Q128 100 200 40Q100 72 0 40Z", 0.05,
-                    "M50 50Q45 100 50 150Q100 155 150 150Q155 100 150 50Q100 45 50 50Z", 0.5,
-                    "M50 0Q72 100 50 180Q100 220 150 180Q128 100 150 0Q100 20 50 0Z", 1
-                ],
-                "mouthPaths" : [
-                    "M52 75q35 37 88 0q26 23 0 46q-28 -50 -86 0q-20 -20 -3 -43l-10 8q6 -18 18 -13Z", 0,
-                    "M52 75q47 30 88 0q24 23 0 46q-43 -43 -86 0q-15 -20 -3 -43l-10 8q6 -18 18 -13Z", 0.05,
-                    "M72 80q30 5 63 0q-8 20 0 22q-30 3 -64 0q0 -9 -3 -18l-8 4q5 -3 14 -14Z", 0.5,
-                    "M75 50q20 5 57 0q-20 60 0 92q-30 30 -60 0q4 -60 0 -88l-12 2q10 -2 18 -14Z", 1
-                ],
-                "strokeColors" : [
-                    "rgb(0,0,0)", 0,
-                    "rgb(80,0,80)", 0.2,
-                    "rgb(80,0,80)", 0.48,
-                    "rgb(80,80,80)", 0.5,
-                    "rgb(208,111,15)", 0.57,
-                    "rgb(208,111,15)", 1
-                ]
+             class="rat"
+             data-darthfader='{
+                "value" : "0.5",
+                "snap" : "facePaths",
+                "thumb" : "colors",
+                "fades" : {
+                    "levels" : ["-100", 0, "100", 1],
+                    "colors" : [
+                        "rgb(128, 0, 128)", 0,
+                        "rgb(128, 0, 128)", 0.2,
+                        "rgb(200, 200, 200)", 0.5,
+                        "rgb(255, 180, 0)", 0.6,
+                        "rgb(255, 180, 0)", 1
+                    ],
+                    "facePaths" : [
+                        "M0 40Q72 100 0 160Q100 122 200 160Q128 100 200 40Q100 72 0 40Z", 0,
+                        "M0 40Q72 100 0 160Q100 122 200 160Q128 100 200 40Q100 72 0 40Z", 0.05,
+                        "M50 50Q45 100 50 150Q100 155 150 150Q155 100 150 50Q100 45 50 50Z", 0.5,
+                        "M50 0Q72 100 50 180Q100 220 150 180Q128 100 150 0Q100 20 50 0Z", 1
+                    ],
+                    "mouthPaths" : [
+                        "M52 75q35 37 88 0q26 23 0 46q-28 -50 -86 0q-20 -20 -3 -43l-10 8q6 -18 18 -13Z", 0,
+                        "M52 75q47 30 88 0q24 23 0 46q-43 -43 -86 0q-15 -20 -3 -43l-10 8q6 -18 18 -13Z", 0.05,
+                        "M72 80q30 5 63 0q-8 20 0 22q-30 3 -64 0q0 -9 -3 -18l-8 4q5 -3 14 -14Z", 0.5,
+                        "M75 50q20 5 57 0q-20 60 0 92q-30 30 -60 0q4 -60 0 -88l-12 2q10 -2 18 -14Z", 1
+                    ],
+                    "strokeColors" : [
+                        "rgb(0,0,0)", 0,
+                        "rgb(80,0,80)", 0.2,
+                        "rgb(80,0,80)", 0.48,
+                        "rgb(80,80,80)", 0.5,
+                        "rgb(208,111,15)", 0.57,
+                        "rgb(208,111,15)", 1
+                    ]
+                }
+                
              }'
             />
         </div>
         <hr style="width:93%">
     </div>
     <script id="faceFaderScript">
+    (() => {
     
-    let Q = {};
-    `faceFader boxPath mouthPath introQ svg0`
-    .trim().split(/\s+/).forEach(obj => {
-        
-        Q[obj] = document.getElementById(obj);
+        let Q = {};
+        `faceFader boxPath mouthPath introQ svg0`
+        .trim().split(/\s+/).forEach(obj => {
     
-    });
-
-    Q.faceFader.addEventListener('valsChanged', e => {
-        Q.boxPath.setAttributeNS(null, 'd', Q.faceFader.vals.facePaths);
-        Q.boxPath.style.fill = Q.faceFader.vals.colors;
-        //Q.boxPath.style.stroke = Q.faceFader.vals.strokeColors;
-        //Q.mouthPath.style.fill = Q.faceFader.vals.strokeColors;
-        Q.mouthPath.setAttributeNS(null, 'd', Q.faceFader.vals.mouthPaths);
-    });
+            Q[obj] = document.getElementById(obj);
     
-    Q.svg0.addEventListener('dblclick', e =>
-        Q.faceFader.setValue(0.5)
-    );
+        });
+    
+        Q.faceFader.addEventListener('darthloaded', e => {
+            Q.faceFader.DF = e.detail.ref;
+        });
+        Q.faceFader.addEventListener('demoFadeEvent', e => {
+            let vals = e.detail.vals;
+            Q.boxPath.setAttributeNS(null, 'd', vals.facePaths);
+            Q.boxPath.style.fill = vals.colors;
+            //Q.boxPath.style.stroke = vals.strokeColors;
+            //Q.mouthPath.style.fill = vals.strokeColors;
+            Q.mouthPath.setAttributeNS(null, 'd', vals.mouthPaths);
+        });
+    
+        Q.svg0.addEventListener('dblclick', e =>
+            Q.faceFader.DF.setValue(0.5)
+        );
+    })();
     
     </script>
-    <div id="intro" class="qr">
-        On a scale from angry to wacky-faced,
-        accurate data collection
-        <i>strongly disagrees</i> with this popular
-        radio fiasco:
-        <br><br>
-    </div>
-    <div id="fiascoRadio" class="strong-disagree">
-        <label for="fiasco0">
-            <div>
-            Strongly<br>Disagree
-            <br>
-            <input id="fiasco0" type="radio" name="fiasco" />
-            </div>
-        </label>
-        <label for="fiasco1">
-            <div>
-            <br>Disagree
-            <br>
-            <input id="fiasco1" type="radio" name="fiasco" />
-            </div>
-        </label>
-        <label for="fiasco2">
-            <div>
-            Don't<br>Know
-            <br>
-            <input id="fiasco2" type="radio" name="fiasco" />
-            </div>
-        </label>
-        <label for="fiasco3">
-            <div>
-            <br>Agree
-            <br>
-            <input id="fiasco3" type="radio" name="fiasco" />
-            </div>
-        </label>
-        <label for="fiasco4">
-            <div>
-            Strong<br>Algae
-            <br>
-            <input id="fiasco4" type="radio" name="fiasco" />
-            </div>
-        </label>
-    </div>
-    <div class="qr">
-        <br>
-        <a href="https://www.researchgate.net/publication/228445427_Do_Data_Characteristics_Change_According_to_the_Number_of_Scale_Points_Used_An_Experiment_Using_5_Point_7_Point_and_10_Point_Scales">
-        Restricting sampled opinion to only five
-        fixed integers
-        exposes statistical analysis to errors of
-        false-significance.
-        </a>
-    </div>
-    <div class="qr">
-        This <a href="darth-faderScript.js"><i>darth-fader</i> script</a>,
-        creates a continuous-slider input object
-        <a href="use.html">[learn more about how to use
-        the code]</a> and can be used to quickly construct
-        common surveys on computers, tablets, or small
-        mobile devices.
-    </div>
-    <hr>
-    <div style="padding:10px;">
+
+    <div id="satisfactionQ" class="qr" style="padding:10px;">
         <div id="ques0">
         <div class="survQ">
-            How satisfied were you with your service?
+            How satisfied were you wolf your service?
         </div>
         <div id="notSat" class="survArr left">Not Satisfied</div>
         <div id="yesSat" class="survArr rite">Satisfied</div>
         <br>
         </div>
+        <div class="qr" style="text-align:center;">
         <input
-         id="df0"
-         class="darth-fader sfx"
-         data-thumb="colors"
-         data-fades='{
-            "notSatCol" : [
-                    "rgb(128, 0, 128)", 0,
-                    "rgb(100, 100, 100)", 0.5,
-                    "rgb(100, 100, 100)", 1
-            ],
-            "yesSatCol" : [
-                    "rgb(100, 100, 100)", 0,
-                    "rgb(100, 100, 100)", 0.5,
-                    "rgb(255, 180, 0)", 1
-            ]
+         id="df0" class="rat"
+         data-darthfader='{
+            "thumb" : "colors",
+            "fades" : {
+                "notSatCol" : [
+                        "rgb(128, 0, 128)", 0,
+                        "rgb(100, 100, 100)", 0.5,
+                        "rgb(100, 100, 100)", 1
+                ],
+                "yesSatCol" : [
+                        "rgb(100, 100, 100)", 0,
+                        "rgb(100, 100, 100)", 0.5,
+                        "rgb(255, 180, 0)", 1
+                ]
+             }
          }'
-        />
-        <script id="faceFaderScript">
+        /></div>
+    </div>
+    <script id="satisFaderScript">
     
 (() => {
-        
     let Q = {};
     `df0 notSat yesSat ques0`
     .trim().split(/\s+/).forEach(obj =>
         Q[obj] = document.getElementById(obj)
     );
 
-    Q.ques0.addEventListener('dblclick', e => {
-        Q.df0.setValue(0.5);
+    Q.df0.addEventListener('darthloaded', e => {
+        df0.DF = e.detail.ref;
     });
     
-    Q.df0.addEventListener('valsChanged', e => {
-        Q.notSat.style.color = Q.df0.vals.notSatCol;
-        Q.yesSat.style.color = Q.df0.vals.yesSatCol;
+    Q.ques0.addEventListener('dblclick', e => {
+        df0.DF.setValue(0.5);
+    });
+    
+    Q.df0.addEventListener('demoFadeEvent', e => {
+        let vals = e.detail.vals;
+        Q.notSat.style.color = vals.notSatCol;
+        Q.yesSat.style.color = vals.yesSatCol;
     });
 
 })();
     
-        </script>
-    </div>
+    </script>
 
     <div id="signature" class="qr" style="font-family:'luckiest guy';text-align:right;">
         <br> <br> <br> <br>
@@ -255,5 +212,5 @@
 </div>
 
 </body>
-<script id="darth-faderScript" src="darth-faderScript.js"></script>
+
 </html>

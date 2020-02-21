@@ -1,12 +1,2 @@
 
-.rat {
-    height: 50px;
-}
 
-@media screen and (max-width:500px) {
-    
-    .rat {
-        height: 100px;
-    }
-    
-}

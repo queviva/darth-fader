@@ -136,21 +136,17 @@ input[type=radio] {
     
 }
 
-.darth-fader.sfx {
-    --max-width: none;
-}
-
-.darth-fader.mini {
-    --thumb-height:20px;
-    --thumb-border: none;
-}
-
 #svg0 {
     position:relative;
     width:220px;
     height:340;
     overflow: visible;
     border: 0px solid #ea0;
+}
+
+.rat {
+    height : 50px;
+    width: 100%;
 }
 
 /*possibly a portrait mobi-fone*/
@@ -168,16 +164,24 @@ input[type=radio] {
         width: 200px;
     }
     
+    .rat {
+        height: 100px;
+    }
+    
 }
 
 /*possibly a mobile landscaper*/
-@media screen 
-    and (orientation: landscape) 
-    and (max-width: 760px) 
+@media screen
+    and (orientation: landscape)
+    and (max-width: 760px)
     {
     
     #svg0 {
         width: 100px;
+    }
+    
+    .rat {
+        height: 50px;
     }
     
 }
