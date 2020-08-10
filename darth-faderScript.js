@@ -47,9 +47,9 @@ window.addEventListener('load', () => { new (function () {
             fade[i] = fade[i].split(/(-?\d*\.{0,1}\d+)/);
 
             // force the numbers to actually be numbers
-            fade[i].forEach((v, k) => {
-                fade[i][k] = isNaN(parseFloat(v)) ? v : Number(v);
-            });
+            fade[i].forEach((v, k) =>
+                fade[i][k] = isNaN(parseFloat(v)) ? v : Number(v)
+            );
 
         }
 
