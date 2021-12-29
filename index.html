@@ -1,7 +1,8 @@
 <!doctype html><html lang="en">
     
-<head><title>darth fader demo</title>
+<head><title>darth-fader</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/x-icon" href="favicon.ico">
 <link id="luckiestFont" href="https://fonts.googleapis.com/css?family=Luckiest+Guy" rel="stylesheet">
 <link id="demoStyles" rel="stylesheet" type="text/css" href="demoStyles.css">
 <script src="darth-fader.js"></script>
@@ -10,53 +11,51 @@
 <body>
 <div id="holder">
     
-    <div id="introQ" class="qr" style="text-align: center;">
-        <hr>
-        <i id="ques" style="font-size:27px;font-family:'luckiest guy'">
+    <div id="intro" class="qr" style="text-align: center;"><hr>
+    
+        <i style="font-size:27px;font-family:'luckiest guy'">
             How do you feel<br class="mobr"> about surveys?
         </i><br>
         
-            <svg id="svg0"
-             viewbox="0 0 220 340"
-             xmlns="http://www.w3.org/2000/svg"
-             xmlns:xlink="http://www.w3.org/1999/xlink"
+        <svg id="svg0"
+         viewbox="0 0 220 340"
+         xmlns="http://www.w3.org/2000/svg"
+         xmlns:xlink="http://www.w3.org/1999/xlink"
+        >
+            <g
+             transform="scale(2.2) translate(-50 -25)"
+             fill-rule="evenOdd"
             >
-                <g
-                 transform="scale(2.2) translate(-50 -25)"
-                 fill-rule="evenOdd"
-                >
-                    <path
-                     id="boxPath"
-                     d="M50 50Q45 100 50 150Q100 155 150 150Q155 100 150 50Q100 45 50 50Z"
-                     style="
-                        stroke: rgb(102,102,102);
-                        stroke-width: 10;
-                        stroke-linejoin: miter;
-                        stroke-miterlimit: 10;
-                        fill: rgb(255,255,255);
-                     "
-                    />
-                    <path
-                     id="mouthPath"
-                     d="M72 80q30 5 63 0q-8 20 0 22q-30 3 -64 0q0 -9 -3 -18l-8 4q5 -3 14 -14Z"
-                     style="
-                        fill: rgb(102,102,102);
-                     "
-                    />
-                </g>
-    
-            </svg>
-            
-        <div id="faceFaderDiv" style="text-align:center;">
+                <path
+                 id="boxPath"
+                 d="M50 50Q45 100 50 150Q100 155 150 150Q155 100 150 50Q100 45 50 50Z"
+                 style="
+                    stroke: rgb(102,102,102);
+                    stroke-width: 10;
+                    stroke-linejoin: miter;
+                    stroke-miterlimit: 10;
+                    fill: rgb(255,255,255);
+                 "
+                />
+                <path
+                 id="mouthPath"
+                 d="M72 80q30 5 63 0q-8 20 0 22q-30 3 -64 0q0 -9 -3 -18l-8 4q5 -3 14 -14Z"
+                 style="
+                    fill: rgb(102,102,102);
+                 "
+                />
+            </g>
+        </svg>
+        
+        <div style="text-align:center;">
             <input
              id="faceFader"
              style="width:300px;"
              type="range"
              data-fade="
-                levels : ['-100', 0, '100', 1],
                 colors : [
                     'rgb(128,   0, 128)', 0.0,
-                    'rgb(128,   0, 128)', 0.4,
+                    'rgb(128,   0, 128)', 0.35,
                     'rgb(255, 255, 255)', 0.5,
                     'rgb(255, 180,   0)', 0.6,
                     'rgb(255, 180,   0)', 1.0
@@ -86,92 +85,85 @@
         </div>
         
     </div>
-    <script id="faceFaderScript">
     
-    let Q = {};
-    
-    'faceFader svg0 boxPath mouthPath'.split(' ').forEach(obj => {
-        Q[obj] = document.getElementById(obj);
-    });
+    <div id="description" class="qr">
+        <b>darth-fader</b>, the master of all faders,
+        adds a customizable <i>onfade event</i>
+        to any specified <i>&lt;input&gt;</i> element in a page;
+        they can be listened for, and handled,
+        in the same way as any event -
+        <a href="use.html"><i>learn more about it here</i></a>
+    </div>
 
+    <div id="survey" class="qr" style="padding:10px;"><hr>
+    
+        <div>
+            <div id="ques0" class="survQue">
+                How satisfied were you wolf your service?
+            </div>
+            <div id="notSat" class="survArr left">Not Satisfied</div>
+            <div id="yesSat" class="survArr rite">Satisfied</div>
+            <br>
+        </div>
+        
+        <div class="qr" style="text-align:center;">
+            <input
+             type="range"
+             id="df0" class="rat"
+             data-fade="
+                notSatCol : [
+                        'rgb(128, 0, 128)', 0,
+                        'rgb(100, 100, 100)', 0.5,
+                        'rgb(100, 100, 100)', 1
+                ],
+                yesSatCol : [
+                        'rgb(100, 100, 100)', 0,
+                        'rgb(100, 100, 100)', 0.5,
+                        'rgb(255, 180, 0)', 1
+                ]
+             "
+             data-fade-opts="thumb:true",
+            />
+        </div>
+
+    </div>
+
+    <div class="signature qr">~queviva</div>
+
+</div>
+</body>
+
+<script>
+    
+(() => {
+    
+    const Q = Object.fromEntries(
+        `faceFader svg0 boxPath mouthPath df0 notSat yesSat ques0`
+        .trim().split(/\s+/)
+        .map(obj => [obj, document.getElementById(obj)])
+    );
+    
     Q.faceFader.addEventListener('fade', (e, vals=e.detail) => {
         Q.boxPath.setAttribute('d', vals.facePaths);
         Q.boxPath.style.fill = vals.colors;
         Q.boxPath.style.stroke = vals.strokeColors;
         Q.mouthPath.style.fill = vals.strokeColors;
         Q.mouthPath.setAttribute('d', vals.mouthPaths);
-        Q.faceFader.style.setProperty('--thumb-border', vals.strokeColors);
     });
     
-    Q.svg0.addEventListener('click', e => {
-        Q.faceFader.value = 50;
-        Q.faceFader.dispatchEvent(new Event('input'));
-    });
-
-    </script>
-    
-    <div class="qr">
-        <b>darth-fader</b> adds a customizable <i>onfade event</i>
-        to any specified input element in a page; they can be
-        listened for and handled like any event -
-        <a href="use.html">you can learn more about it here</a>
-        
-    </div>
-
-    <div id="satisfactionQ" class="qr" style="padding:10px;">
-        <div id="ques0">
-        <div class="survQ">
-            How satisfied were you wolf your service?
-        </div>
-        <div id="notSat" class="survArr left">Not Satisfied</div>
-        <div id="yesSat" class="survArr rite">Satisfied</div>
-        <br>
-        </div>
-        <div class="qr" style="text-align:center;">
-        <input
-         type="range"
-         id="df0" class="rat"
-         data-fade="
-            notSatCol : [
-                    'rgb(128, 0, 128)', 0,
-                    'rgb(100, 100, 100)', 0.5,
-                    'rgb(100, 100, 100)', 1
-            ],
-            yesSatCol : [
-                    'rgb(100, 100, 100)', 0,
-                    'rgb(100, 100, 100)', 0.5,
-                    'rgb(255, 180, 0)', 1
-            ]
-         "
-         data-fade-opts="thumb:true",
-        /></div>
-    </div>
-    <script id="satisFaderScript">
-    
-(() => {
-    let Q = {};
-    `df0 notSat yesSat ques0`
-    .trim().split(/\s+/).forEach(obj =>
-        Q[obj] = document.getElementById(obj)
-    );
-
     Q.df0.addEventListener('fade', (e, vals=e.detail) => {
-        //console.log(vals)
         Q.notSat.style.color = vals.notSatCol;
         Q.yesSat.style.color = vals.yesSatCol;
+    });
+    
+    Q.ques0.addEventListener('dblclick', () => {
+        Q.df0.value=50;
+        Q.df0.dispatchEvent(new Event('input'));
     });
 
 })();
     
-    </script>
+</script>
 
-    <div id="signature" class="qr" style="font-family:'luckiest guy';text-align:right;">
-        <br> <br> <br> <br>
-        <i>~queviva</i>
-    </div>
-
-</div>
-
-</body>
 
 </html>
