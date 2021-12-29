@@ -4,65 +4,43 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link id="luckiestFont" href="https://fonts.googleapis.com/css?family=Luckiest+Guy" rel="stylesheet">
 <link id="demoStyles" rel="stylesheet" type="text/css" href="demoStyles.css">
-<script src="newdarth.js"></script>
+<script src="darth-fader.js"></script>
 </head>
 
 <body>
 <div id="holder">
     
-    <div id="introQ" class="qr" style="text-align:center;">
+    <div id="introQ" class="qr" style="text-align: center;">
         <hr>
         <i id="ques" style="font-size:27px;font-family:'luckiest guy'">
-            How do you feel about surveys?
+            How do you feel<br class="mobr"> about surveys?
         </i><br>
+        
             <svg id="svg0"
              viewbox="0 0 220 340"
-             XXXstyle="
-                position:relative;
-                width:220px;
-                height:340;
-                overflow: visible;
-                border: 0px solid #ea0;
-             "
              xmlns="http://www.w3.org/2000/svg"
              xmlns:xlink="http://www.w3.org/1999/xlink"
             >
-                <!--defs>
-                    <pattern
-                     id="mig1"
-                     patternUnits="userSpaceOnUse"
-                     x="-20"
-                     y="0"
-                     height="200"
-                     width="200"
-                    >
-                        <image
-                         xlink:href="plaid0.jpg"
-                         height="200"
-                         width="200"
-                        />
-                    </pattern>
-                </defs-->
                 <g
                  transform="scale(2.2) translate(-50 -25)"
                  fill-rule="evenOdd"
                 >
                     <path
                      id="boxPath"
-                     class="srv srv-path"
+                     d="M50 50Q45 100 50 150Q100 155 150 150Q155 100 150 50Q100 45 50 50Z"
                      style="
-                        stroke: rgba(0,0,0,1);
+                        stroke: rgb(102,102,102);
                         stroke-width: 10;
                         stroke-linejoin: miter;
                         stroke-miterlimit: 10;
-                        fill: none;
+                        fill: rgb(255,255,255);
                      "
                     />
                     <path
                      id="mouthPath"
-                     class="srv srv-path"
+                     d="M72 80q30 5 63 0q-8 20 0 22q-30 3 -64 0q0 -9 -3 -18l-8 4q5 -3 14 -14Z"
                      style="
-                        fill: #000;
+                        fill: rgb(102,102,102);
                      "
                     />
                 </g>
@@ -72,20 +50,19 @@
         <div id="faceFaderDiv" style="text-align:center;">
             <input
              id="faceFader"
+             style="width:300px;"
              type="range"
-             class="rat"
              data-fade="
                 levels : ['-100', 0, '100', 1],
                 colors : [
-                    'rgb(128, 0, 128)', 0,
-                    'rgb(128, 0, 128)', 0.2,
-                    'rgb(200, 200, 200)', 0.5,
-                    'rgb(255, 180, 0)', 0.8,
-                    'rgb(255, 180, 0)', 1
+                    'rgb(128,   0, 128)', 0.0,
+                    'rgb(128,   0, 128)', 0.4,
+                    'rgb(255, 255, 255)', 0.5,
+                    'rgb(255, 180,   0)', 0.6,
+                    'rgb(255, 180,   0)', 1.0
                 ],
                 facePaths : [
                     'M0 40Q72 100 0 160Q100 122 200 160Q128 100 200 40Q100 72 0 40Z', 0,
-                    'M0 40Q72 100 0 160Q100 122 200 160Q128 100 200 40Q100 72 0 40Z', 0.05,
                     'M50 50Q45 100 50 150Q100 155 150 150Q155 100 150 50Q100 45 50 50Z', 0.5,
                     'M50 0Q72 100 50 180Q100 220 150 180Q128 100 150 0Q100 20 50 0Z', 1
                 ],
@@ -96,45 +73,50 @@
                     'M75 50q20 5 57 0q-20 60 0 92q-30 30 -60 0q4 -60 0 -88l-12 2q10 -2 18 -14Z', 1
                 ],
                 strokeColors : [
-                    'rgb(80,0,80)', 0,
-                    'rgb(80,0,80)', 0.2,
-                    'rgb(100,100,100)', 0.5,
-                    'rgb(208,111,15)', 0.8,
-                    'rgb(208,111,15)', 1
+                    'rgb( 80,  0, 80)', 0.0,
+                    'rgb( 80,  0, 80)', 0.4,
+                    'rgb(102,102,102)', 0.5,
+                    'rgb(208,111, 15)', 0.6,
+                    'rgb(208,111, 15)', 1.0
                 ]
              "
              data-fade-opts="snap:'facePaths',thumb:'colors'"
             />
-        </div>
         <hr>
+        </div>
+        
     </div>
     <script id="faceFaderScript">
-    (() => {
     
-        let Q = {};
-        `faceFader boxPath mouthPath introQ svg0`
-        .trim().split(/\s+/).forEach(obj => {
+    let Q = {};
     
-            Q[obj] = document.getElementById(obj);
+    'faceFader svg0 boxPath mouthPath'.split(' ').forEach(obj => {
+        Q[obj] = document.getElementById(obj);
+    });
+
+    Q.faceFader.addEventListener('fade', (e, vals=e.detail) => {
+        Q.boxPath.setAttribute('d', vals.facePaths);
+        Q.boxPath.style.fill = vals.colors;
+        Q.boxPath.style.stroke = vals.strokeColors;
+        Q.mouthPath.style.fill = vals.strokeColors;
+        Q.mouthPath.setAttribute('d', vals.mouthPaths);
+        Q.faceFader.style.setProperty('--thumb-border', vals.strokeColors);
+    });
     
-        });
-    
-        Q.faceFader.addEventListener('fade', e => {
-            let vals = e.detail;
-            Q.boxPath.setAttributeNS(null, 'd', vals.facePaths);
-            Q.boxPath.style.fill = vals.colors;
-            Q.boxPath.style.stroke = vals.strokeColors;
-            Q.mouthPath.style.fill = vals.strokeColors;
-            Q.mouthPath.setAttributeNS(null, 'd', vals.mouthPaths);
-        });
-    
-        Q.svg0.addEventListener('dblclick', e => {
-            Q.faceFader.value = 0.5;
-            Q.faceFader.dispatchEvent(new Event('input'));
-        });
-    })();
-    
+    Q.svg0.addEventListener('click', e => {
+        Q.faceFader.value = 50;
+        Q.faceFader.dispatchEvent(new Event('input'));
+    });
+
     </script>
+    
+    <div class="qr">
+        <b>darth-fader</b> adds a customizable <i>onfade event</i>
+        to any specified input element in a page; they can be
+        listened for and handled like any event -
+        <a href="use.html">you can learn more about it here</a>
+        
+    </div>
 
     <div id="satisfactionQ" class="qr" style="padding:10px;">
         <div id="ques0">
@@ -173,16 +155,8 @@
         Q[obj] = document.getElementById(obj)
     );
 
-    Q.df0.addEventListener('darthloaded', e => {
-        df0.DF = e.detail.ref;
-    });
-    
-    Q.ques0.addEventListener('dblclick', e => {
-        df0.DF.setValue(0.5);
-    });
-    
-    Q.df0.addEventListener('demoFadeEvent', e => {
-        let vals = e.detail.vals;
+    Q.df0.addEventListener('fade', (e, vals=e.detail) => {
+        //console.log(vals)
         Q.notSat.style.color = vals.notSatCol;
         Q.yesSat.style.color = vals.yesSatCol;
     });
