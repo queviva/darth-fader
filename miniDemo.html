@@ -60,10 +60,8 @@
              id="faceFader"
              type="range"
              class="darth-fader"
-             data-value="0.5"
-             XXXdata-snap="facePaths"
-             data-thumb="colors"
-             data-fades='{
+             data-fade-opts="snap:'facePaths',thumb:'colors'"
+             data-fade='{
                 "levels" : ["-100", 0, "100", 1],
                 "colors" : [
                     "rgb(128, 0, 128)", 0,
@@ -105,17 +103,19 @@
     
     });
 
-    Q.faceFader.addEventListener('valsChanged', e => {
-        Q.boxPath.setAttributeNS(null, 'd', Q.faceFader.vals.facePaths);
+    Q.faceFader.addEventListener('fade', e => {
+        console.log('is happening');
+        Q.boxPath.setAttributeNS(null, 'd', e.detail.facePaths);
         Q.boxPath.style.fill = Q.faceFader.vals.colors;
         //Q.boxPath.style.stroke = Q.faceFader.vals.strokeColors;
         //Q.mouthPath.style.fill = Q.faceFader.vals.strokeColors;
-        Q.mouthPath.setAttributeNS(null, 'd', Q.faceFader.vals.mouthPaths);
+        Q.mouthPath.setAttributeNS(null, 'd', e.detail.mouthPaths);
     });
     
-    Q.svg0.addEventListener('dblclick', e =>
-        Q.faceFader.setValue(0.5)
-    );
+    Q.svg0.addEventListener('dblclick', e => {
+        Q.faceFader.value(0.5);
+        Q.faceFader.dispatchEvent(new Event('input'));
+    });
 
     </script>
 </div>

@@ -1,9 +1,8 @@
-
 :root {
     --main-color: #666;
     --greyed-out: #888;
-    --back-color: #fff;
-    --holder-back: #eee;
+    --back-color: #666;
+    --holder-back: #111;
     --faded-txt: rgba(255, 255, 255, 0.5);
     --trans-speed: 0.3s;
     --samp-var: #c30;
@@ -15,9 +14,8 @@
 }
 
 body {
-    padding: 0px;
-    margin: 0px;
-    color: var(--main-color);
+    padding: 0;
+    margin: 0;
     background-color: var(--back-color);
     font-size: 22px;
     text-align: justify;
@@ -30,7 +28,8 @@ body {
 
 #holder {
 	position: relative;
-	background-color: var(--holder-back);
+    color: var(--main-color);
+    background-color: var(--holder-back);
     margin: auto;
     width: 100%;
     max-width: 700px;
@@ -41,21 +40,17 @@ a {
     color: var(--main-color);
 }
 
+a:hover, a:visited {
+    color: #eee;
+    transition: color linear var(--trans-speed);
+}
+
 .qa {
-    border: 1px solid #000;
+    border: 1px solid var(--main-color);
 }
 
 .qr {
     padding: 10px;
-}
-
-.qa, .qr {
-    transition: color linear var(--trans-speed);
-}
-
-.qa:hover, .qr:hover, a:hover, a:visited {
-    color: #000;
-    transition: color linear var(--trans-speed);
 }
 
 .qa:after {
@@ -79,13 +74,24 @@ a {
   text-align: center;
 }
 
-
 pre {
-    background-color: var(--greyed-out);
+    background-color: var(--main-color);
     margin: 0px;
-    padding: 0px;
+    padding: 10px;
     color: #fff;
     overflow: auto;
+}
+
+hr {
+    border-top: 1px solid var(--main-color);
+    border-bottom: none;
+    border-left: none;
+    border-right: none;
+    margin: 7px 0px 7px 0px;
+}
+
+.mobr {
+    display: none;
 }
 
 .strong-disagree {
@@ -93,7 +99,7 @@ pre {
     padding: 5px;
     width: 100%;
     font-size: 20px;
-    background-color: #888;
+    background-color: var(--main-color);
     color: #fff;
     display:flex;
     margin: auto;
@@ -130,10 +136,8 @@ pre {
 }
 
 input[type=radio] {
-    
     height: 30px;
     width: 30px;
-    
 }
 
 #svg0 {
@@ -142,11 +146,6 @@ input[type=radio] {
     height:340;
     overflow: visible;
     border: 0px solid #ea0;
-}
-
-.rat {
-    height : 50px;
-    width: 100%;
 }
 
 /*possibly a portrait mobi-fone*/
@@ -164,26 +163,25 @@ input[type=radio] {
         width: 200px;
     }
     
-    .rat {
-        height: 100px;
+    input[type=range] {
+        --thumbH : 100px;
+    }
+    
+    .mobr {
+        display: inline-block;
     }
     
 }
 
 /*possibly a mobile landscaper*/
-@media screen
-    and (orientation: landscape)
-    and (max-width: 760px)
-    {
+@media screen and (orientation: landscape) and (max-width: 760px) {
     
     #svg0 {
         width: 100px;
     }
     
-    .rat {
-        height: 50px;
+    input[type=range] {
+        --thumbH: 30px;
     }
     
 }
-
-

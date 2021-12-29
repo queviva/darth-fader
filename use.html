@@ -1,18 +1,18 @@
-<!doctype html>
-<html lang="en">
+<!doctype html><html lang="en">
+    
 <head><title>darth-fader</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link id="luckiestFont" href="https://fonts.googleapis.com/css?family=Luckiest+Guy" rel="stylesheet">
-<link id="darth-faderStyles" rel="stylesheet" type="text/css" href="darth-faderStyles.css">
 <link id="demoStyles" rel="stylesheet" type="text/css" href="demoStyles.css">
 </head>
+
 <body>
-    
 <div id="holder">
+
     <div id="introQ" class="qr" style="text-align: center;">
-        <hr style="width:93%">
+        <hr>
         <i id="ques" style="font-size:27px;font-family:'luckiest guy'">
-            How do you feel about surveys?
+            How do you feel<br class="mobr"> about surveys?
         </i><br>
             <svg id="svg0"
              viewbox="0 0 220 340"
@@ -48,7 +48,6 @@
                 >
                     <path
                      id="boxPath"
-                     class="srv srv-path"
                      style="
                         stroke: rgba(0,0,0,1);
                         stroke-width: 10;
@@ -59,7 +58,6 @@
                     />
                     <path
                      id="mouthPath"
-                     class="srv srv-path"
                      style="
                         fill: #000;
                      "
@@ -74,67 +72,40 @@
             <input
              id="faceFader"
              type="range"
-             class="darth-fader"
-             data-value="0.5"
-             XXXdata-snap="facePaths"
-             data-thumb="colors"
-             data-fades='{
-                "levels" : ["-100", 0, "100", 1],
-                "colors" : [
-                    "rgb(128, 0, 128)", 0,
-                    "rgb(128, 0, 128)", 0.2,
-                    "rgb(200, 200, 200)", 0.5,
-                    "rgb(255, 180, 0)", 0.6,
-                    "rgb(255, 180, 0)", 1
+             data-fade="
+                levels : ['-100', 0, '100', 1],
+                colors : [
+                    'rgb(128, 0, 128)', 0,
+                    'rgb(128, 0, 128)', 0.4,
+                    'rgb(200, 200, 200)', 0.5,
+                    'rgb(255, 180, 0)', 0.6,
+                    'rgb(255, 180, 0)', 1
                 ],
-                "facePaths" : [
-                    "M0 40Q72 100 0 160Q100 122 200 160Q128 100 200 40Q100 72 0 40Z", 0,
-                    "M0 40Q72 100 0 160Q100 122 200 160Q128 100 200 40Q100 72 0 40Z", 0.05,
-                    "M50 50Q45 100 50 150Q100 155 150 150Q155 100 150 50Q100 45 50 50Z", 0.5,
-                    "M50 0Q72 100 50 180Q100 220 150 180Q128 100 150 0Q100 20 50 0Z", 1
+                facePaths : [
+                    'M0 40Q72 100 0 160Q100 122 200 160Q128 100 200 40Q100 72 0 40Z', 0,
+                    'M50 50Q45 100 50 150Q100 155 150 150Q155 100 150 50Q100 45 50 50Z', 0.5,
+                    'M50 0Q72 100 50 180Q100 220 150 180Q128 100 150 0Q100 20 50 0Z', 1
                 ],
-                "mouthPaths" : [
-                    "M52 75q35 37 88 0q26 23 0 46q-28 -50 -86 0q-20 -20 -3 -43l-10 8q6 -18 18 -13Z", 0,
-                    "M52 75q47 30 88 0q24 23 0 46q-43 -43 -86 0q-15 -20 -3 -43l-10 8q6 -18 18 -13Z", 0.05,
-                    "M72 80q30 5 63 0q-8 20 0 22q-30 3 -64 0q0 -9 -3 -18l-8 4q5 -3 14 -14Z", 0.5,
-                    "M75 50q20 5 57 0q-20 60 0 92q-30 30 -60 0q4 -60 0 -88l-12 2q10 -2 18 -14Z", 1
+                mouthPaths : [
+                    'M52 75q35 37 88 0q26 23 0 46q-28 -50 -86 0q-20 -20 -3 -43l-10 8q6 -18 18 -13Z', 0,
+                    'M52 75q47 30 88 0q24 23 0 46q-43 -43 -86 0q-15 -20 -3 -43l-10 8q6 -18 18 -13Z', 0.05,
+                    'M72 80q30 5 63 0q-8 20 0 22q-30 3 -64 0q0 -9 -3 -18l-8 4q5 -3 14 -14Z', 0.5,
+                    'M75 50q20 5 57 0q-20 60 0 92q-30 30 -60 0q4 -60 0 -88l-12 2q10 -2 18 -14Z', 1
                 ],
-                "strokeColors" : [
-                    "rgb(0,0,0)", 0,
-                    "rgb(80,0,80)", 0.2,
-                    "rgb(80,0,80)", 0.48,
-                    "rgb(80,80,80)", 0.5,
-                    "rgb(208,111,15)", 0.57,
-                    "rgb(208,111,15)", 1
+                strokeColors : [
+                    'rgb(80,0,80)', 0,
+                    'rgb(80,0,80)', 0.4,
+                    'rgb(102,102,102)', 0.5,
+                    'rgb(208,111,15)', 0.6,
+                    'rgb(208,111,15)', 1
                 ]
-             }'
+             "
+             data-fade-opts="snap:'facePaths',thumb:'colors'"
             />
         </div>
         <hr style="width:93%">
     </div>
-    <script id="faceFaderScript">
-    
-    let Q = {};
-    `faceFader boxPath mouthPath svg0 introQ`
-    .split(/\s+/).forEach(obj => {
-        
-        Q[obj] = document.getElementById(obj);
-    
-    });
 
-    Q.faceFader.addEventListener('valsChanged', e => {
-        Q.boxPath.setAttributeNS(null, 'd', Q.faceFader.vals.facePaths);
-        Q.boxPath.style.fill = Q.faceFader.vals.colors;
-        //Q.boxPath.style.stroke = Q.faceFader.vals.strokeColors;
-        //Q.mouthPath.style.fill = Q.faceFader.vals.strokeColors;
-        Q.mouthPath.setAttributeNS(null, 'd', Q.faceFader.vals.mouthPaths);
-    });
-    
-    Q.introQ.addEventListener('dblclick', e =>
-        Q.faceFader.setValue(0.5)
-    );
-
-    </script>
     <div id="intro" class="qr">
         On a scale from angry to wacky-faced,
         accurate data collection
@@ -142,6 +113,7 @@
         radio fiasco:
         <br><br>
     </div>
+    
     <div id="fiascoRadio" class="strong-disagree">
         <label for="fiasco0">
             <div>
@@ -179,21 +151,24 @@
             </div>
         </label>
     </div>
+    
     <div class="qr">
         <br>
         Restricting sampled opinion to only five
         fixed integers
-        exposes statistical analysis to errors of 
+        exposes statistical analysis to errors of
         false-significance.
     </div>
+    
     <div class="qr">
         <a href="https://www.researchgate.net/publication/228445427_Do_Data_Characteristics_Change_According_to_the_Number_of_Scale_Points_Used_An_Experiment_Using_5_Point_7_Point_and_10_Point_Scales">
         Possibly</a>, allowing participants to gauge their
-        opinion on a sliding scale, and collecting 
-        data at a higher degree of precision, would 
+        opinion on a sliding scale, and collecting
+        data at a higher degree of precision, would
         expose errors in other methods of surveying,
         or permit more meaningful results.
     </div>
+    
     <div class="qr">
             This <i>darth-fader</i> script,
             and its associated css
@@ -201,6 +176,7 @@
             sliding-scale input device.
             from the following code
     </div>
+    
     <div id="defaultFaderDiv" class="qa" style="border:1px solid;">
         <div>
             <pre><code>
@@ -213,22 +189,25 @@
             <input class="darth-fader" />
         </div>
     </div>
+    
     <div class="qr">
         The darth-fader input is accurate, as can be,
-        to 0.001 increments, and accepts 
-        <i>nearly anything</i> as potential 
+        to 0.001 increments, and accepts
+        <i>nearly anything</i> as potential
         numerically-fadeable inputs through its
         data-fades parameter.
     </div>
+    
     <div class="qr">
         This customized example fader uses a well-formated
         JSON string to set up fades for
         level-values from negative to positive
         one hundred, and colors from red to green
         [through grey]. It also uses data-params
-        to set an initial value for the fader and 
+        to set an initial value for the fader and
         a decimal-fix.
     </div>
+    
     <div id="customFaderDiv" class="qa">
         <div>
             <pre><code>
@@ -267,6 +246,7 @@
 />
         </div>
     </div>
+    
     <script id="customFaderScript">
         let cFade = document.getElementById('customFader');
         let cOut = document.getElementById('customOutput');
@@ -280,16 +260,18 @@
     
         });
     </script>
+    
     <div class="qr">
-        As many fade values as needed are entered as 
+        As many fade values as needed are entered as
         arrays, indicating a string of a value
         followed by the stop-point percentage
         at which the fader should reach that value.
         <br><br>
-        darth-fader will search through any string to 
-        find numerical values, and fade between them 
+        darth-fader will search through any string to
+        find numerical values, and fade between them
         at the given points.
     </div>
+    
     <div class="qr">
         This code would create a fade between black and white.
         <br><br>
@@ -315,10 +297,12 @@
 /&gt;
         </code></pre>
     </div>
+    
     <div class="qr">
         This code creates a fade between svg paths.
         <br><br>
     </div>
+    
     <div id="svgFaderSampleDiv" class="qa">
         <div>
         <pre><code>
@@ -367,7 +351,7 @@ data-fades='{
                     "M50 50h100v101h22z", 1
                 ]
              }'
-            /> 
+            />
             <script id="sampSVGscript">
 let svgFader = document.getElementById('svgFaderSamp');
 let sampPath = document.getElementById('svgSampPath');
@@ -378,11 +362,12 @@ svgFader.addEventListener('valsChanged', e => {
             </script>
         </div>
     </div>
+    
     <div class="qr">
-        All darth-fader objects must have a value 
+        All darth-fader objects must have a value
         for zero% and for one-hundred%
         <br><br>
-        As many fade arrays as possible may be 
+        As many fade arrays as possible may be
         entered in a single input object.
         <br><br>
         The fader will attempt to parse out,
@@ -390,20 +375,21 @@ svgFader.addEventListener('valsChanged', e => {
         The following code would actually function...
         <br><br>
         <pre><code>
-data-fix="2"            
+data-fix="2"
 data-fades='{
     "story" : [
         "In 3 weeks, I will lose $10 and 8 pounds", 0,
-        "In 9 weeks, I will lose $300 and 20 pounds", 1  
+        "In 9 weeks, I will lose $300 and 20 pounds", 1
     ]
 }'
         </code></pre>
         <br>
         ... as this example shows:
     </div>
+    
     <div class="qa">
         <div>
-            <input 
+            <input
              id="storyFader"
              type="range"
              class="darth-fader"
@@ -434,15 +420,17 @@ sFade.addEventListener('valsChanged', e => {
 });
         </script>
     </div>
+    
     <div class="qr">
-        The resulting value is accessed from the 
-        darth-fader-object.vals array, during the 
+        The resulting value is accessed from the
+        darth-fader-object.vals array, during the
         custom event <i>valsChanged</i>
     </div>
+    
     <div class="qr">
         <pre><code>
             
-&lt;input 
+&lt;input
  id="storyFader"
  type="range"
  class="darth-fader"
@@ -475,39 +463,43 @@ sFade.addEventListener('valsChanged', e => {
             
         </code></pre>
     </div>
+    
     <div class="qr">
         Silly enough to <i>want</i> snaps?
         darth-fader takes a snap parameter
-        and creates snaps at the stop-points 
+        and creates snaps at the stop-points
         of the specified fade name:
         <br><br>
         data-snap="name_of_fade_to_snap_to"
         <br><br>
         Want the drag-dot to color itself?
-        use the data-thumb param and set it 
+        use the data-thumb param and set it
         equal to the fade that should provide
         the color values.
     </div>
+    
     <div class="qr">
         If no data-fade is specified in the html,
         darth-fader creates a default fade array
         of its own, called <i>levels</i>
         which graduates between
-        negative and positive one hundred and is 
+        negative and positive one hundred and is
         accessed through
         <br><br>
         darthObject.vals.levels
         <br><br>
     </div>
+    
     <div id="snapSampDiv" class="qr">
-       This code creates a fader that colors itself 
-       and snaps to the stop points for the 
+       This code creates a fader that colors itself
+       and snaps to the stop points for the
        default levels fade - which will be at 50%
     </div>
+    
     <div class="qa">
         <div>
             <pre><code>
-&lt;input 
+&lt;input
  id="snapFader"
  class="darth-fader"
  data-thumb="colors"
@@ -516,7 +508,7 @@ sFade.addEventListener('valsChanged', e => {
             </code></pre>
         </div>
         <div>
-            <input 
+            <input
              id="snapFader"
              class="darth-fader"
              data-thumb="colors"
@@ -524,21 +516,23 @@ sFade.addEventListener('valsChanged', e => {
             />
         </div>
     </div>
+    
     <div class="qr">
-        As a form input element, darth-faders create 
-        a hidden input for each specified fade.  That 
+        As a form input element, darth-faders create
+        a hidden input for each specified fade.  That
         input has the name and id of
         <i>obj.id_fadeName</i>, and will get submitted
-        with the form.  Submitting the following example 
+        with the form.  Submitting the following example
         will display the form results in the location
         bar.
     
     </div>
+    
     <div id="sampFormDiv" class="qr">
     <form method="get" action="#">
         <div class="qa">
             <div>
-                <input 
+                <input
                  id="postTestA"
                  class="darth-fader mini"
                  data-value="0.45"
@@ -546,7 +540,7 @@ sFade.addEventListener('valsChanged', e => {
                  data-snap="levels"
                  data-fix="2"
                 />
-                <input 
+                <input
                  id="postTestB"
                  class="darth-fader mini"
                  data-value="0.75"
@@ -554,7 +548,7 @@ sFade.addEventListener('valsChanged', e => {
                  data-snap="levels"
                  data-fix="2"
                 />
-                <input 
+                <input
                  id="postTestZ"
                  class="darth-fader mini"
                  data-value="0.2"
@@ -577,9 +571,10 @@ sFade.addEventListener('valsChanged', e => {
         </div>
     </form>
     </div>
+    
     <!--div class="qr">
         See what would happen with a standard survey
-        that uses darth-faders 
+        that uses darth-faders
     </div>
     <form action="#">
         
@@ -601,16 +596,16 @@ sFade.addEventListener('valsChanged', e => {
              xmlns="http://www.w3.org/2000/svg"
              preserveAspectRatio="none"
             >
-                <path 
+                <path
                  fill="#fff"
                  d="M100 0V50H0V100Z"
                 />
-                <path 
+                <path
                  id="bar"
                  fill="rgb(200,0,200)"
                 />
             </svg>
-        </div> 
+        </div>
     <div class="qr">
             <input
              id="rate00"
@@ -631,7 +626,7 @@ sFade.addEventListener('valsChanged', e => {
                      "rgb(236,170,0)",1
                  ]
              }'
-            /> 
+            />
             <script>
 let r00 = document.getElementById('rate00');
 let bar = document.getElementById('bar');
@@ -650,8 +645,40 @@ r00.addEventListener('valsChanged', e => {
         <i>~queviva</i>
     </div>
 
-</div>
 
+</div>
 </body>
-<script id="darth-faderScript" src="darth-faderScript.js"></script>
+
+<script id="darthScript" src="newdarth.js"></script>
+    
+<script id="faceFaderScript">
+    
+document.addEventListener('DOMContentLoaded', () => {
+    
+    let Q = {};
+    
+    `faceFader boxPath mouthPath svg0 introQ`
+    .split(/\s+/).forEach(obj => {
+
+        Q[obj] = document.getElementById(obj);
+
+    });
+
+    Q.faceFader.addEventListener('fade', e => {
+        Q.boxPath.setAttribute('d', e.detail.facePaths);
+        Q.boxPath.style.fill = e.detail.colors;
+        Q.boxPath.style.stroke = e.detail.strokeColors;
+        Q.mouthPath.style.fill = e.detail.strokeColors;
+        Q.mouthPath.setAttribute('d', e.detail.mouthPaths);
+    });
+
+    Q.introQ.addEventListener('click', e => {
+        Q.faceFader.value = 50;
+        Q.faceFader.dispatchEvent(new Event('input'));
+    });
+
+});
+
+</script>
+    
 </html>
