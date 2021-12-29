@@ -163,10 +163,6 @@ input[type=radio] {
         width: 200px;
     }
     
-    input[type=range] {
-        --thumbH : 100px;
-    }
-    
     .mobr {
         display: inline-block;
     }
@@ -178,10 +174,6 @@ input[type=radio] {
     
     #svg0 {
         width: 100px;
-    }
-    
-    input[type=range] {
-        --thumbH: 30px;
     }
     
 }

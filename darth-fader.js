@@ -22,31 +22,39 @@ new Date() < new Date('2023-10-13') &&
         
 //}
 
-        // prefs {
+        // data-parameter parser {
+        sting = x => JSON.parse('{'+
+            x.replace(/\s*([a-zA-Z-]+)\s*:\s*/g, '"$1":')
+             //.replace(/:\s*'/g,':"').replace(/'\s*$/g,'"')
+             .replace(/'/g, '"')
+        +'}'),
+        //}
         
-        // default object preferences
-        default_prefs = {
-            appName     : 'darth-fader',
-            selector    : 'fade',
-            eventName   : 'fade',
-            thumb       : false,
-            snap        : false,
-            steps       : false,
-            fix         : false,
-            ignore      : false,
-            passive     : true
-        },
+        // prefs {
+        prefs = Object.assign({},
+        
+            // default object preferences
+            {
+                appName     : 'darth-fader',
+                selector    : 'fade',
+                eventName   : 'fade',
+                thumb       : false,
+                snap        : false,
+                steps       : false,
+                fix         : false,
+                ignore      : false,
+                passive     : true
+            },
 
-        // grab prefs set in the data-parameter of the script-tag
-        param_prefs = JSON.parse(Object.values(dset)[0] || '{}'),
-
-        // assemble prefs by overwriting eachother
-        prefs = Object.assign({}, default_prefs, param_prefs),
-    
+            // grab prefs set in the data-parameter of the script-tag
+            sting(Object.values(dset)[0] || '')
+        
+        ),
+        
         //}
             
         // global vars {
-        nicknames = {},
+        //nicknames = {},
         //}
             
         // global methods {
@@ -173,20 +181,16 @@ new Date() < new Date('2023-10-13') &&
 
     ) {
     
-        // add the styles needed for darth faders
+        // add the styles needed for darth faders {
         (document.body.appendChild((document.createElement('style'))))
-        .innerText = //{
+        .innerText =
         `
 input[data-${prefs.selector}] {
     --thumbH : 40px;
     --thumb-color: rgb(255,255,255);
     --thumb-border: var(--holder-back);
     -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
     display: inline-block;
-    padding: 0;
-    margin: 0;
     height: var(--thumbH);
     width: 100%;
     border-radius: calc(var(--thumbH) / 2);
@@ -195,10 +199,8 @@ input[data-${prefs.selector}] {
 
 input[data-${prefs.selector}]::-webkit-slider-thumb {
     -webkit-appearance: none;
-    appearance: none;
     background-color: var(--thumb-color);
     height: var(--thumbH);
-    margin-bottom: 0px;
     width: var(--thumbH);
     border: calc(0.1 * var(--thumbH)) solid;
     border-color: var(--thumb-border);
@@ -209,47 +211,42 @@ input[data-${prefs.selector}]:focus {
     outline: none;
 }
 
+@media screen and (max-width:500px) {
+    input[data-${ prefs.selector }] {
+        --thumbH: 100px;
+    }
+}
+
+@media screen and (orientation: landscape) and (max-width: 760px) {
+    input[data-${ prefs.selector }] {
+        --thumbH: 30px;
+    }
+}
+
         `;
         //}
 
+        // loop through objects making faders  {
         document.querySelectorAll(
     
             `[data-${prefs.selector}]:not(script)
             ,[data-${prefs.selector}-opts]:not(script)`
     
         ).forEach((obj, i) => this[i] = new(function() {
+        //}
         
             // set object prefs {
             for (let [k, v] of Object.entries(Object.assign({},
-        
                 prefs,
-    
-                JSON.parse('{"fades":{' +
-                    (obj.dataset[prefs.selector] || '')
-                    .replace(/\'/g, '"')
-                    .replace(/\s*([a-zA-Z-]+)\s*:/g, '"$1":') +
-                    '}}'),
-    
-                JSON.parse('{' +
-                    (obj.dataset[prefs.selector + 'Opts'] || '')
-                    .replace(/\s/g, '')
-                    .replace(/\'/g, '"')
-                    .replace(/([a-zA-Z-]+):/g, '"$1":') +
-                    '}'),
-    
+                sting('"fades":{'+(obj.dataset[prefs.selector] || '')+'}'),
+                sting(obj.dataset[prefs.selector + 'Opts'] || ''),
                 {
                     obj: obj,
                     id: obj.id,
                     min: obj.min || 0,
                     max: obj.max || 100,
-                    hiddenInputs: [],
-                    PV: parseFade([
-                        'rgb(200,0,200)', 0,
-                        'rgb(255,255,255)', 0.5,
-                        'rgb(238,170,0)', 1
-                    ])
+                    hiddenInputs: []
                 }
-    
             ))) { this[k] = v; }
             //}
         
@@ -257,16 +254,17 @@ input[data-${prefs.selector}]:focus {
             this.dif = this.max - this.min;
             
             // set the apropos height
-            obj.style.setProperty('--thumbH', obj.offsetHeight + 'px');
+            //obj.style.setProperty('--thumbH', obj.offsetHeight + 'px');
             
-            // check if there are gignores
+            // check if there are gignores {
             if (this.ignore) {
                 this.ignore = JSON.parse('{'+
                     this.ignore
-                    .replace(/\s*([a-zA-Z-]+)\s*/g,'"$1":true')
+                    .replace(/([a-zA-Z-]+)/g,'"$1":true')
                     .replace(/,$/,'')
                 +'}');
             }
+            //}
             
             // parse the fades data
             for (let fade in this.fades) {
@@ -327,46 +325,36 @@ input[data-${prefs.selector}]:focus {
         
             // check if color-the-thumb option set
             if (this.thumb) {
-        
-                // check if the specified fade exists
-                if (this.fades[this.thumb]) {
-        
-                    // add a listener
-                    obj.addEventListener(this.eventName, e => {
-        
-                        // force the color back on itself
-                        obj.style.setProperty(
-                            '--thumb-color', e.detail[this.thumb]
-                        );
-                        
-                    });
-        
+            
+                // create the fade if it doesn't exist
+                if (!this.fades[this.thumb]) {
+                    this.fades[(this.thumb = 'thumb')] = parseFade([
+                        'rgb(200,0,200)', 0,
+                        'rgb(255,255,255)', 0.5,
+                        'rgb(238,170,0)', 1
+                    ]);
                 }
-                else { // other wize need to create colors
-        
-                    // listen for values changed
-                    obj.addEventListener(this.eventName, e => {
-        
-                        // set the thumb color
-                        obj.style.setProperty(
-                            '--thumb-color',
-                            e.detail.PV
-                        );
-        
-                    });
-                }
+                
+                // add a listener
+                obj.addEventListener(this.eventName, e => {
+                    obj.style.setProperty(
+                        '--thumb-color', e.detail[this.thumb]
+                    );
+                });
+            
             }
         
             // listen for inputs to the slider
             obj.addEventListener('input', e => inputHandler(this));
         
             // add this obj to the nicknames
-            nicknames[obj.id || prefs.selector + i] =
-            nicknames[prefs.selector + i] = i;
+            //nicknames[obj.id || prefs.selector + i] =
+            //nicknames[prefs.selector + i] = i;
         
         })());
     
         // app listeners {
+        /*
         for (let [a, b, c = { passive: true }] of [
             
             // deliver the entire app if get-requested {
@@ -382,9 +370,8 @@ input[data-${prefs.selector}]:focus {
             }]
             //}
 
-        ]) {
-            window.addEventListener(a, b, c);
-        }
+        ]) { window.addEventListener(a, b, c); }
+        */
         //}
         
     })()
