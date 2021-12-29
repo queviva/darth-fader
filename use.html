@@ -12,40 +12,39 @@
     
     <div id="introQ" class="qr" style="text-align: center;">
         <hr>
-        <i id="ques" style="font-size:27px;font-family:'luckiest guy'">
+        <i style="font-size:27px;font-family:'luckiest guy'">
             How do you feel<br class="mobr"> about surveys?
         </i><br>
         
-            <svg id="svg0"
-             viewbox="0 0 220 340"
-             xmlns="http://www.w3.org/2000/svg"
-             xmlns:xlink="http://www.w3.org/1999/xlink"
+        <svg id="svg0"
+         viewbox="0 0 220 340"
+         xmlns="http://www.w3.org/2000/svg"
+         xmlns:xlink="http://www.w3.org/1999/xlink"
+        >
+            <g
+             transform="scale(2.2) translate(-50 -25)"
+             fill-rule="evenOdd"
             >
-                <g
-                 transform="scale(2.2) translate(-50 -25)"
-                 fill-rule="evenOdd"
-                >
-                    <path
-                     id="boxPath"
-                     d="M50 50Q45 100 50 150Q100 155 150 150Q155 100 150 50Q100 45 50 50Z"
-                     style="
-                        stroke: rgb(102,102,102);
-                        stroke-width: 10;
-                        stroke-linejoin: miter;
-                        stroke-miterlimit: 10;
-                        fill: rgb(255,255,255);
-                     "
-                    />
-                    <path
-                     id="mouthPath"
-                     d="M72 80q30 5 63 0q-8 20 0 22q-30 3 -64 0q0 -9 -3 -18l-8 4q5 -3 14 -14Z"
-                     style="
-                        fill: rgb(102,102,102);
-                     "
-                    />
-                </g>
-    
-            </svg>
+                <path
+                 id="boxPath"
+                 d="M50 50Q45 100 50 150Q100 155 150 150Q155 100 150 50Q100 45 50 50Z"
+                 style="
+                    stroke: rgb(102,102,102);
+                    stroke-width: 10;
+                    stroke-linejoin: miter;
+                    stroke-miterlimit: 10;
+                    fill: rgb(255,255,255);
+                 "
+                />
+                <path
+                 id="mouthPath"
+                 d="M72 80q30 5 63 0q-8 20 0 22q-30 3 -64 0q0 -9 -3 -18l-8 4q5 -3 14 -14Z"
+                 style="
+                    fill: rgb(102,102,102);
+                 "
+                />
+            </g>
+        </svg>
             
         <div id="faceFaderDiv" style="text-align:center;">
             <input
@@ -84,8 +83,9 @@
             />
         <hr>
         </div>
-        
+    
     </div>
+    
     <script id="faceFaderScript">
     
     let Q = {};
@@ -245,21 +245,19 @@ fader0.addEventListener('fade',
         </div>
     </div>
     
-    <script>
+    <script id="formSubmission">
         slide0.addEventListener('fade', (e, vals=e.detail) => {
-            cap0.innerHTML = `I <b>${vals.response}</b> ${ vals.statement }.`;
+            cap0.innerHTML = `I <b>${vals.response}</b> ${vals.statement}.`;
         });
+        
         butt0.addEventListener('click', () => {
-            
             let tmp = '[[form results]]';
-            
             form0.querySelectorAll('input:not([type="button"])')
             .forEach(p => tmp += ('<br>'+p.id+' ::: '+p.value));
-            
             formResults.innerHTML = tmp;
-            
         });
     </script>
+
 </div>
 </body>
 

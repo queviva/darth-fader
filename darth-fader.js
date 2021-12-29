@@ -24,9 +24,7 @@ new Date() < new Date('2023-10-13') &&
 
         // data-parameter parser {
         sting = x => JSON.parse('{'+
-            x.replace(/\s*([a-zA-Z-]+)\s*:\s*/g, '"$1":')
-             //.replace(/:\s*'/g,':"').replace(/'\s*$/g,'"')
-             .replace(/'/g, '"')
+            x.replace(/\s*([a-zA-Z-]+)\s*:\s*/g,'"$1":').replace(/'/g,'"')
         +'}'),
         //}
         
@@ -50,11 +48,6 @@ new Date() < new Date('2023-10-13') &&
             sting(Object.values(dset)[0] || '')
         
         ),
-        
-        //}
-            
-        // global vars {
-        //nicknames = {},
         //}
             
         // global methods {
@@ -226,13 +219,13 @@ input[data-${prefs.selector}]:focus {
         `;
         //}
 
-        // loop through objects making faders  {
-        document.querySelectorAll(
+        // loop through objects making faders
+        document.querySelectorAll(//{
     
             `[data-${prefs.selector}]:not(script)
             ,[data-${prefs.selector}-opts]:not(script)`
     
-        ).forEach((obj, i) => this[i] = new(function() {
+        ).forEach((obj, i) => this[i] = new (function() {
         //}
         
             // set object prefs {
@@ -253,10 +246,7 @@ input[data-${prefs.selector}]:focus {
             // calculate the range delta
             this.dif = this.max - this.min;
             
-            // set the apropos height
-            //obj.style.setProperty('--thumbH', obj.offsetHeight + 'px');
-            
-            // check if there are gignores {
+            // check if there are gignores
             if (this.ignore) {
                 this.ignore = JSON.parse('{'+
                     this.ignore
@@ -264,7 +254,6 @@ input[data-${prefs.selector}]:focus {
                     .replace(/,$/,'')
                 +'}');
             }
-            //}
             
             // parse the fades data
             for (let fade in this.fades) {
@@ -347,32 +336,7 @@ input[data-${prefs.selector}]:focus {
             // listen for inputs to the slider
             obj.addEventListener('input', e => inputHandler(this));
         
-            // add this obj to the nicknames
-            //nicknames[obj.id || prefs.selector + i] =
-            //nicknames[prefs.selector + i] = i;
-        
         })());
-    
-        // app listeners {
-        /*
-        for (let [a, b, c = { passive: true }] of [
-            
-            // deliver the entire app if get-requested {
-            ['get-' + prefs.selector, e => {
-                window.dispatchEvent(new CustomEvent(
-                    'catch-' + prefs.selector, {
-                        detail: new Proxy(this, {
-                            get(target, prop) {
-                                return target[nicknames[prop]] || target[prop] || '';
-                            }
-                        })
-                    }));
-            }]
-            //}
-
-        ]) { window.addEventListener(a, b, c); }
-        */
-        //}
         
     })()
     

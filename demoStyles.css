@@ -37,12 +37,32 @@ body {
 
 a {
     text-decoration: none;
-    color: var(--main-color);
+    color: var(--greyed-out);
 }
 
 a:hover, a:visited {
-    color: #eee;
+    color: var(--greyed-out);
     transition: color linear var(--trans-speed);
+}
+
+b {
+    color: var(greyed-out);
+}
+
+pre {
+    background-color: var(--main-color);
+    margin: 0px;
+    padding: 10px;
+    color: #fff;
+    overflow: auto;
+}
+
+hr {
+    border-top: 1px solid var(--main-color);
+    border-bottom: none;
+    border-left: none;
+    border-right: none;
+    margin: 7px 0px 7px 0px;
 }
 
 .qa {
@@ -74,22 +94,6 @@ a:hover, a:visited {
   text-align: center;
 }
 
-pre {
-    background-color: var(--main-color);
-    margin: 0px;
-    padding: 10px;
-    color: #fff;
-    overflow: auto;
-}
-
-hr {
-    border-top: 1px solid var(--main-color);
-    border-bottom: none;
-    border-left: none;
-    border-right: none;
-    margin: 7px 0px 7px 0px;
-}
-
 .mobr {
     display: none;
 }
@@ -109,7 +113,7 @@ hr {
     width: 20%;
 }
 
-.survQ {
+.survQue {
     padding: 10px;
     width: 100%;
     text-align: center;
@@ -131,7 +135,7 @@ hr {
     content: '\25C0 \25C0 \25C0  ';
 }
 
-.survArr.rite:after{
+.survArr.rite:after {
     content: '  \25B6 \25B6 \25B6';
 }
 
@@ -176,4 +180,10 @@ input[type=radio] {
         width: 100px;
     }
     
+}
+
+.signature {
+    text-align: right;
+    font-family: 'luckiest guy';
+    font-style: italic;
 }
