@@ -12,7 +12,7 @@
 // expiration check {
 
 // check if now is before the expiration date
-new Date() < new Date('2023-10-13') &&
+//new Date() < new Date('2023-10-13') &&
 
 // pass in the script-tag dataset, preserved for contentloaded
 ((dset = document.currentScript.dataset) =>
@@ -40,8 +40,7 @@ new Date() < new Date('2023-10-13') &&
                 snap        : false,
                 steps       : false,
                 fix         : false,
-                ignore      : false,
-                passive     : true
+                ignore      : false
             },
 
             // grab prefs set in the data-parameter of the script-tag
@@ -59,7 +58,7 @@ new Date() < new Date('2023-10-13') &&
             for (let i = 0, j = fade.length; i < j; i += 2) {
         
                 // split it up on the numbers saving delimiters
-                fade[i] = fade[i].split(/(-?\d*\.{0,1}\d+)/);
+                fade[i] = fade[i].split(/(-?\d*\.?\d+)/);
         
                 // force the numbers to actually be numbers
                 fade[i].forEach((v, k) =>
@@ -81,8 +80,17 @@ new Date() < new Date('2023-10-13') &&
             
             curFade.lowEnd.forEach((v, i) => {
                 
-                // if the value is not a number ...
-                if (typeof v !== 'number') {
+                // if  ...
+                if (
+                    // the value is not a number
+                    typeof v !== 'number'
+                    
+                    || // or
+                    
+                    // there is no difference ...
+                    curFade.topEnd[i] === v
+                    
+                ) {
         
                     // just set it
                     curDif[i] = v;
@@ -104,7 +112,7 @@ new Date() < new Date('2023-10-13') &&
                      (curFade.topStop - curFade.lowStop));
         
                     // set with apropos fix
-                    curDif[i] = fix ? tmp.toFixed(fix) : tmp;
+                    curDif[i] = fix  ? tmp.toFixed(fix) : tmp;
         
                 }
         
@@ -251,7 +259,6 @@ input[data-${prefs.selector}]:focus {
                 this.ignore = JSON.parse('{'+
                     this.ignore
                     .replace(/([a-zA-Z-]+)/g,'"$1":true')
-                    .replace(/,$/,'')
                 +'}');
             }
             
@@ -278,10 +285,10 @@ input[data-${prefs.selector}]:focus {
             }
         
             // check if steps option set
-            if (this.steps) { obj.setAttribute('step', this.dif / (
-                (typeof this.steps === 'number' ? this.steps:
+            if (this.steps) { obj.setAttribute('step', (this.dif / ((
+                typeof this.steps === 'number' ? this.steps:
                 (this.fades[this.steps].length / 2)) -1
-            ))}
+            )).toString().substring(0,6))}
             
             // check if snap option set
             if (this.snap && this.fades[this.snap]) {
@@ -335,6 +342,11 @@ input[data-${prefs.selector}]:focus {
         
             // listen for inputs to the slider
             obj.addEventListener('input', e => inputHandler(this));
+            
+            // set it by forcing an input
+            obj.dispatchEvent(new Event('input'));
+
+// expiration msg {
         
         })());
         
@@ -342,4 +354,4 @@ input[data-${prefs.selector}]:focus {
     
 ))()
 
-=== undefined || (console.log('eXp!red'));
+//=== undefined || (console.log('eXp!red')); //}
