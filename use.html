@@ -3,17 +3,18 @@
 <head><title>darth-fader</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#000" />
+<link rel="icon" type="image/x-icon" href="favicon.ico">
 <link id="luckiestFont" href="https://fonts.googleapis.com/css?family=Luckiest+Guy" rel="stylesheet">
 <link rel="stylesheet" type="text/css" href="demoStyles.css">
+<script id="darthScript" src="darth-fader.js"></script>
 </head>
 
 <body>
 <div id="holder">
     
-    <div id="introQ" class="qr" style="text-align: center;">
-        <hr>
-        <i style="font-size:27px;font-family:'luckiest guy'">
-            How do you feel<br class="mobr"> about surveys?
+    <div id="face" class="qr" style="text-align: center;">
+        <i style="font-size:25px;font-family:'luckiest guy'">
+            How do you feel<br class="mobr"> about programming?
         </i><br>
         
         <svg id="svg0"
@@ -46,9 +47,9 @@
             </g>
         </svg>
             
-        <div id="faceFaderDiv" style="text-align:center;">
+        <div id="fadDiv" style="text-align:center;">
             <input
-             id="faceFader"
+             id="svgFader"
              style="width:300px;"
              type="range"
              data-fade="
@@ -56,7 +57,7 @@
                 colors : [
                     'rgb(128,   0, 128)', 0.0,
                     'rgb(128,   0, 128)', 0.4,
-                    'rgb(255, 255, 255)', 0.5,
+                    'rgb(190, 190, 190)', 0.5,
                     'rgb(255, 180,   0)', 0.6,
                     'rgb(255, 180,   0)', 1.0
                 ],
@@ -81,48 +82,26 @@
              "
              data-fade-opts="snap:'facePaths',thumb:'colors'"
             />
-        <hr>
         </div>
     
     </div>
+    <hr>
     
-    <script id="faceFaderScript">
-    
-    let Q = {};
-    
-    'faceFader svg0 boxPath mouthPath'.split(' ').forEach(obj => {
-        Q[obj] = document.getElementById(obj);
-    });
-
-    Q.faceFader.addEventListener('fade', (e, vals=e.detail) => {
-        Q.boxPath.setAttribute('d', vals.facePaths);
-        Q.boxPath.style.fill = vals.colors;
-        Q.boxPath.style.stroke = vals.strokeColors;
-        Q.mouthPath.style.fill = vals.strokeColors;
-        Q.mouthPath.setAttribute('d', vals.mouthPaths);
-        Q.faceFader.style.setProperty('--thumb-border', vals.strokeColors);
-    });
-    
-    Q.svg0.addEventListener('click', e => {
-        Q.faceFader.value = 50;
-        Q.faceFader.dispatchEvent(new Event('input'));
-    });
-
-    </script>
-    
-    <div class="qr">
-        <b>darth-fader</b> adds a customizable <i>onfade event</i>
-        to any specified input element in a page; they can be
-        listened for and handled like any event
+    <div id="intro" class="qr">
+        <b>darth-fader.js</b> adds a customizable
+        <i>onfade event</i>
+        to any specified &lt;input&nbsp;type=range&gt;
+        element in a page;
+        listen for and handle the event like any other
         <br><br>
         
-        include the script, then list stop-point fades in
-        a data-param for any range-input elements you want
-        and listen for the default <i>fade</i> event;
+        include the script, then add a stop-point list
+        of fade arrays in a data-param, and listen for the
+        default <i>fade</i> event;
         the following is a simple example
     </div>
 
-    <div class="qr">
+    <div id="simpleExample" class="qr">
         <pre>
             
 &lt;script src="darth-fader.js"&gt;&lt;/script&gt;
@@ -131,11 +110,11 @@
 
 &lt;input id="fader0" type="range" data-fade="
     color : [
-        'rgb(255,255,  0)', 0,
-        'rgb(255,  0,  0)', 0.25,
-        'rgb(255,255,255)', 0.50,
-        'rgb(  0,255,255)', 0.75,
-        'rgb(255,  0,255)', 1
+        'rgb(255, 255,   0)', 0,
+        'rgb(255,   0,   0)', 0.25,
+        'rgb(255, 255, 255)', 0.50,
+        'rgb(  0, 255, 255)', 0.75,
+        'rgb(255,   0, 255)', 1
     ],
     size : [
         ' 20px',    0,
@@ -163,77 +142,90 @@ fader0.addEventListener('fade',
         
         the <i>event.detail</i> of the fade event contains
         a property for every listed fade in that input element
-        - for example, if you create a fade called 'width'
+        - for example, if you create a fade called 'height'
         you would access the current interpolated value
-        from the handler's <i>event.detail.width</i> property
-    </div>
-    
-    <div class="qr">
-        <hr>
-        there are many different options to configure which
-        allows for different things, like this survey example:
+        from the handler's <i>event.detail.height</i> property
+        
         <br><br>
-        <div id="cap0" style="
-            width:100%;text-align:center;font-style:italic;color:#fff;
-        ">
-            What do you think about my alternative view?
-        </div>
-    </div>
-    
-    <div class="qr">
-        <input id="slide0" type="range" min="-20"
-         data-fade="
-            statement : [
-                ' that your opinion is evil', 0,
-                ' that your opinion is evil', 1
-            ],
-            response : [
-                'strongly disagree',  0.0,
-                'kinda disagree',     0.25 ,
-                'could care less',    0.50,
-                'somewhat agree',     0.75,
-                'strongly AGREE',     0.99
-            ],
-            thumb : [
-                'rgb(200,100,  0)', 0,
-                'rgb(225,175,  0)', 0.25,
-                'rgb(255,255,255)', 0.5,
-                'rgb(200,  0,200)', 0.75,
-                'rgb(100,  0,100)', 1
-            ]
-         "
-         data-fade-opts="
-            thumb       : 'thumb',
-            snap        : 'thumb',
-            fix         : '0',
-            steps       : 'thumb',
-            ignore      : 'thumb'
-         "
-        />
-    </div>
-    
-    <div class="qr">
-        every fade added to the input's param also has a
-        hidden input element that will get submitted with
-        the form
+        each &lt;input&gt; element contains a list
+        of arrays to fade through;
+        they are specified as a <i>name</i> for
+        that array, followed by a <i>colon</i>,
+        then an array in <i>hard-brackets</i>;
+        the array consists of string-percent pairs:
+        a <i>string</i> for the desired value, and a
+        <i>float percent</i> as the stop-point
+        for that value
+        <br><br>
+        <dd><i>
+            name : ['value', %, 'value', %, ... ]
+        </i></dd>
+        <br>
+        values are entered as a string
+        in <i>single</i> quotes - any numbers will
+        be extracted from the string and converted
+        to actual numbers - separate arrays with a comma
+        <br><br>
+        
+        every fade added to the input's param also
+        creates an &lt;input&nbsp;type="hidden"&gt;
+        element that will get submitted with the form -
+        the hidden input will be assigned an <i>id</i>
+        that is the darth-fader input's id, combined by an
+        <i>underscore</i> to the fade's name
+        <br><br>
+        in the above example, <i>fader0</i> created
+        two hidden inputs, one named
+        <i>fader0_color</i> and another with the id
+        <i>fader0_size</i>; besides being submitted
+        with any form, the current value of a fade
+        can also be accessed from the darth-fader's
+        hidden inputs
+        <br><br>
     </div>
     
     <div id="form0" class="qa">
+        
         <div id="quiz" style="text-align:center;font-style:italic;">
             how do you feel about question one?<br>
         <input id="ques1" type="range" style="--thumbH:20px;"
-         data-fade="sentiment:['-100',0,'100',1]"
-         data-fade-opts="thumb:true"
+         data-fade="
+            sentiment:['bad',0,'ok',0.33,'good',0.66,'good',1],
+            color : [
+               'hsl(0, 0%,  0%)', 0,
+               'hsl(0, 0%, 60%)', 1
+            ]
+        "
+         data-fade-opts="thumb:'color',ignore:'color'"
         />
             what about question two?<br>
         <input id="ques2" type="range" style="--thumbH:20px;"
-         data-fade="temperature:['-100',0,'100',1]"
-         data-fade-opts="thumb:true"
+         data-fade="
+            temperature: ['HOT!',0,'warm',0.33,'cold',0.66],
+            color : [
+               'hsl(40, 80%,  0%)', 0,
+               'hsl(40,100%,100%)', 1
+            ]
+         "
+         data-fade-opts="thumb:'color',ignore:'color'"
         />
             think about question three...<br>
         <input id="ques3" type="range" style="--thumbH:20px;"
-         data-fade="intensity:['-100',0,'100',1]"
-         data-fade-opts="thumb:true"
+         data-fade="
+             intensity : [
+                'strong negative',  0.0,
+                'weakly negative',  0.2,
+                'no preference',    0.4,
+                'weakly positive',  0.6,
+                'strong positive',  0.8,
+                'strong positive',  1.0
+             ],
+             color : [
+                'hsl(300, 80%,  0%)', 0,
+                'hsl(300,100%,100%)', 1
+             ]
+         "
+         data-fade-opts="thumb:'color',ignore:'color'"
         />
         <p>
         <input id="butt0" type="button" value="bite here"
@@ -244,23 +236,347 @@ fader0.addEventListener('fade',
             [[form results]]
         </div>
     </div>
-    
-    <script id="formSubmission">
-        slide0.addEventListener('fade', (e, vals=e.detail) => {
-            cap0.innerHTML = `I <b>${vals.response}</b> ${vals.statement}.`;
-        });
-        
-        butt0.addEventListener('click', () => {
-            let tmp = '[[form results]]';
-            form0.querySelectorAll('input:not([type="button"])')
-            .forEach(p => tmp += ('<br>'+p.id+' ::: '+p.value));
-            formResults.innerHTML = tmp;
-        });
-    </script>
 
+    <div id="options" class="qr">
+        there are many different options which may
+        be configured - <i>darth-fader.js</i> itself
+        has defaults that may be overwritten by
+        the script tag's <i>data-param</i>;
+        any options may also be specified by the
+        individual darth-fader's <i>data-param</i>
+        <br><br>
+        let's take a look at an example of that
+        <br><br>
+        
+        <pre>
+&lt;!--
+    options in the script tag data-parameter
+    become defaults for all darth-fader elements
+    
+    here they are being set to what the default
+    values would be anyway, just so that you
+    can see what those values are
+--&gt;
+
+&lt;script src="darth-fader.js" data-fade="
+
+    selector    : 'fade',
+    eventName   : 'fade',
+    thumb       : false,
+    snap        : false,
+    steps       : false,
+    fix         : false,
+    ignore      : false
+    
+"&gt;&lt;/script&gt;
+
+&lt;!--
+    options can be overwritten in the element
+--&gt;
+
+&lt;input id="faderX" type="range"
+ data-fade="
+    
+    price  : ['$200', 0, '$1800', 1],
+    
+    colors : [
+        'rgb(200, 100,   0)', 0,
+        'rgb(225, 175,   0)', 0.25,
+        'rgb(255, 255, 255)', 0.5,
+        'rgb(200,   0, 200)', 0.75,
+        'rgb(100,   0, 100)', 1
+    ],
+ "
+ data-fade-opts="
+
+    eventName   : 'faderXevent',
+    thumb       : 'colors',
+    fix         : 2
+    
+ "
+/&gt;
+        </pre>
+        
+        <br>
+        alright, this will fade between several different
+        colors, aswell as between the prices of
+        <i>two hundred dollars</i> and
+        <i>eighteen hundred dollars</i> - but what do
+        all of these options mean?
+        
+        <ul>
+            <li><b>selector</b> : this is what needs to follow
+            <i>data-</i> in the parameter in order for
+            <i>darth-fader.js</i> to recognize the element
+            as a darth fader; by default, anything with
+            <i>&lt;input data-fade&gt;</i> will be selected;
+            it can be any <i>string</i>
+            </li>
+            <br>
+            
+            <li><b>eventName</b> : the name of the event that
+            handlers need to listen for - by default, this is
+            also <i>fade</i>; in the example, <i>faderX</i>
+            has changed only its specific event's name to
+            <i>faderXevent</i>
+            </li>
+            <br>
+            
+            <li><b>thumb</b> : designates, by <i>string</i>,
+            the name of the fade that should be used to
+            color the <i>thumb</i> of the slider element;
+            in this example, the <i>colors</i> fade is
+            being used to color the thumb - this can also
+            be the boolean value <i>true</i>, in which case
+            <i>darth-fader.js</i> will color the thumb
+            using default colors
+            </li>
+            <br>
+            
+            <li><b>snap</b> : this is the <i>string</i>
+            name of the fade whose values you would like
+            the slider to snap at - <i>darth-fader.js</i>
+            will create a <i>datalist</i> element and use
+            that to snap the slider to the apropos values
+            denoted by the percentage stop-points of the fade
+            </li>
+            <br>
+            
+            <li><b>steps</b> : if, for some reason, you would
+            like the slider to move only in discreet steps,
+            set this value to the <i>string</i> name of
+            a fade and the slider will only move in as many
+            steps as there are percent-values in that fade;
+            alternatively, set this value to an <i>integer</i>
+            number of steps
+            </li>
+            <br>
+            
+            <li><b>fix</b> : if you want all numerically fadded
+            values to be only a fixed number of decimal places
+            long, enter the <i>integer</i> that specifies how
+            many decimal places each numerical value should have;
+            in this example, <i>faderX</i> has indicated
+            <i>two</i> decimal places, likely because of the
+            <i>price</i> fader using monetary values
+            </li>
+            <br>
+            
+            <li><b>ignore</b> : by default, all fades listed
+            in the data-param have a <i>hidden input</i>
+            element automatically created for them - these
+            hidden inputs are, ofcourse, form elements whose
+            values will get submitted if you use a darth-fader
+            in a form - this <i>string</i> is a comma-separated
+            list of the names of any fades for which you do NOT
+            want to have a hidden input element
+            </li>
+            <br>
+        </ul>
+    </div>
+    <hr>
+    
+    <div id="anystring" class="qa">
+        <div>
+        <i>darth-fader.js</i> will do anything in his power
+        to find values and extrapolate between them
+        <br><br>
+        it should be, therefore, possible to
+        fade gradually through <i>sentences</i> ...
+        <br><br>
+        
+        <input id="anystringFader" type="range" value="100"
+         style="--thumbH:100px;"
+         data-fade="
+            sentence: [
+            'In 30 days,  I will lose 10 pounds, and over $50', 0.0,
+            'In  8 weeks, I will gain 40 pounds, and earn $250', 0.5,
+            'In 12 weeks, I will gain 70 pounds, and earn $1200', 1.0
+            ]
+         "
+         data-fade-opts="fix:2"
+         />
+        </div>
+        <div><i id="anystringOutput" style="
+            color: #fff;
+            font-size: 1.5em;
+            text-align: left;
+        ">
+            [[see my weightloss goals]]
+        </i></div>
+    </div>
+    <br><br>
+    
+    <div id="svgstring" class="qb">
+        <div style="text-align:center;">
+            <svg
+                viewbox="-50 -50 100 100"
+                height="200"
+                width="200"
+                xmlns="http://www.w3.org/2000/svg"
+                xmlns:xlink="http://www.w3.org/1999/xlink"
+                style="overflow: visible;"
+            >
+                <g transform="scale(1.1, 1.1) translate(0, 0)">
+                <path id="svgstringOutput" d=""/>
+                </g>
+            </svg>
+        </div>
+        <div>
+            and, ofcourse, this makes strings like the
+            <i>d</i> attribute of an svg <i>path</i>
+            element something that can be easily faded,
+            producing a morph
+            <br><br>
+            <input id="svgstringFader" type="range" style="--thumbH:100px;"
+             value=0
+             data-fade="
+                path : [
+                    'M -30 -30 Q 0 -10 30 -30 Q 20 -11 30 40 Q 12 20 -35 45 Q -50 0 -30 -30Z', 0,
+                    'M -45 -32 Q 0 -40 50 -28 Q 28 10 64 50 Q 12 80 -25 70 Q -25 -10 -45 -32Z', 1
+                ]
+             "
+             data-fade-opts="thumb:true,steps:5"
+            />
+        </div>
+    </div>
+    <br><br>
+    
+    <div id="outro" class="qr">
+        there is a <a href="darth-fader.min.js">minified version</a>
+        that, for now, is just automatically minified by an
+        online minifier - eventually, there ought to be a more terse
+        version, intentionally designed to be as small as possible
+        <br><br>
+        if you are happy with the defaults, you can simply
+        include the <i>darth-fader.js</i> script, label any
+        inputs with a <i>data-fade</i> or
+        <i>data-fade-opts</i> parameter,
+        and write handlers for the <i>fade</i> event
+        <br><br>
+        
+        <pre>
+            
+&lt;script src="darth-fader.js"&gt;&lt;/script&gt;
+
+&lt;input data-fade-opts="thumb:true,steps:5"&gt;
+        </pre>
+        <br>
+        <i>darth-fader.js</i> will look for any &lt;input&gt;
+        that has either <i>data-fade</i> or <i>data-fade-opts</i>;
+        if the only information given is the
+        <i>thumb:true</i> option, the script automatically
+        creates a thumb-coloring slider
+    </div>
+    
+    <hr>
+    <div id="altview" class="qr">
+        <div style="height:100px"></div>
+        <div id="cap0"
+         data-ques="What do you think about my alternative view?"
+         style="width:100%;text-align:center;font-style:italic;color:#fff;"
+        >
+            What do you think about my alternative view?
+        </div>
+        <br>
+        <input id="slide0" type="range"
+         data-fade="
+            level : ['-1000',0,'1000',1],
+            statement : [
+                ' that you are right', 0,
+                ' that your opinion is evil', 0.5
+            ],
+            response : [
+                'strongly DISagree!!!', 0.0,
+                'strongly DISagree',  0.01,
+                'kinda disagree',     0.2,
+                'could care less',    0.4,
+                'somewhat agree',     0.6,
+                'strongly AGREE',     0.8,
+                'strongly AGREE!!!',  0.999
+            ],
+            thumb : [
+                'rgb(200,100,  0)', 0,
+                'rgb(225,175,  0)', 0.25,
+                'rgb(255,255,255)', 0.5,
+                'rgb(200,  0,200)', 0.75,
+                'rgb(100,  0,100)', 1
+            ],
+            fontsize : [
+                '3.0',   0.00,
+                '2.0',   0.05,
+                '1.4',   0.25,
+                '1.0',   0.50,
+                '1.4',   0.75,
+                '2.0',   0.95,
+                '3.0',   1.00
+            ]
+         "
+         data-fade-opts="
+            thumb       : 'thumb',
+            ignore      : 'statement, response, thumb'
+         "
+        />
+    </div>
+
+    <div class="signature qr">~queviva</div>
+    
 </div>
 </body>
 
-<script id="darthScript" src="darth-fader.js"></script>
+<script id="docScript">
+    
+(() => {
 
+    const Q = Object.fromEntries(
+        `svgFader svg0 boxPath mouthPath form0 cap0 slide0 butt0
+         formResults ques1 ques2 ques3
+        `
+        .trim().split(/\s+/).map(obj=>[obj,document.getElementById(obj)])
+    );
+
+    Q.svgFader.addEventListener('fade', (e, vals = e.detail) => {
+        Q.boxPath.setAttribute('d', vals.facePaths);
+        Q.boxPath.style.fill = vals.colors;
+        Q.boxPath.style.stroke = vals.strokeColors;
+        Q.mouthPath.style.fill = vals.strokeColors;
+        Q.mouthPath.setAttribute('d', vals.mouthPaths);
+    });
+    
+    Q.svg0.addEventListener('dblclick', () => {
+        Q.svgFader.value = 50;
+        Q.svgFader.dispatchEvent(new Event('input'));
+    })
+    
+    Q.cap0.addEventListener('click', () => {
+        Q.slide0.value = 50;
+        Q.slide0.dispatchEvent(new Event('input'));
+        Q.cap0.innerHTML = Q.cap0.dataset.ques;
+    })
+
+    Q.slide0.addEventListener('fade', (e, vals = e.detail) => {
+        Q.cap0.innerHTML =
+        `I <b style="font-size:${vals.fontsize}em;"
+        >${vals.response}</b> ${vals.statement}.`;
+        Q.cap0.style.color = vals.thumb;
+    });
+
+    Q.butt0.addEventListener('click', () => {
+        let tmp = '[[form results]]';
+        Q.form0.querySelectorAll('input:not([type="button"])')
+        .forEach(p => tmp += ('<br>' + p.id + ' ::: ' + p.value));
+        Q.formResults.innerHTML = tmp;
+    });
+    
+    anystringFader.addEventListener('fade', (e, vals=e.detail) => {
+        anystringOutput.innerHTML = vals.sentence;
+    });
+    
+    svgstringFader.addEventListener('fade', (e, vals=e.detail) => {
+        svgstringOutput.setAttribute('d', vals.path);
+        svgstringOutput.setAttribute('fill', vals.thumb);
+    });
+})();
+    
+</script>
 </html>
