@@ -5,4 +5,4 @@ the master of all faders
 
 or
 
-[here](https://queviva.github.io/darth-fader/miniDemo.html)
+[here](https://queviva.github.io/darth-fader/use.html)
